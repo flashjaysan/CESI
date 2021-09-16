@@ -16,7 +16,7 @@ Téléchargez et installez VirtualBox pour Windows (ne fermez pas la fenêtre du
 
 ![Lien vers VirtualBox pour Windows](images/xYVh0QU67d.png)
 
-Faites défiler la page précédente, téléchargez et installez `VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack`.
+Faites défiler la page précédente, téléchargez et installez `VirtualBox X.X.XX Oracle VM VirtualBox Extension Pack`.
 
 ![Lien vers VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack](images/cS30n5iX8u.png)
 
@@ -54,23 +54,169 @@ Une nouvelle machine virtuelle apparaît sur l'écran principal de VirtualBox. S
 
 ![Ecran principal de VirtualBox et bouton Configuration](images/3Y7d9MlsGx.png)
 
-Dans la section `Système`, onglet `Processeur`, saisissez `2` dans le champ `Nombre de processeurs` et cochez les `Fonctions avancées` `Activer PAE/NX` et `Activer VT-x/ADM-Vimbriqué` (si disponible). Cliquez ensuite sur le bouton `OK`.
+Dans la section `Système`, onglet `Processeur`, saisissez `2` dans le champ `Nombre de processeurs` et cochez dans les `Fonctions avancées` les options `Activer PAE/NX` et `Activer VT-x/ADM-Vimbriqué` (si disponible).
 
 ![Configuration, section Système, onglet Processeur](images/Dl3cWJysSO.png)
 
-**Remarque :** L'option `Bridge` ne marche pas sur le réseau du CESI.
+Dans la section `Réseau`, onglet `Adapter1`, sélectionnez l'option `Accès par pont` dans le `Mode d'accès réseau`. Cliquez ensuite sur le bouton `OK`.
 
-Bride Adapter.
+**Remarque :** L'option `Accès par pont` ne marche pas sur le réseau du CESI.
 
-RécupéreZ l'image de la dernière version de la distribution Debian sur le site [debian.org](https://www.debian.org/).
+![Configuration, section Réseau, onglet Adapter1](images/GeF1kLE2dP.png)
 
-Storage -> Controller ide
-Ajouter un lecteur optique
-Sléectionner l'iso.
+#### Téléchargement de Linux
+
+Récupérez l'image de la dernière version de la distribution Debian sur le site [debian.org](https://www.debian.org/).
+
+![Site debian.org](images/Hi1KvZBDyE.png)
+
+#### Sélection de l'image Linux dans VirtualBox
+
+Dans la section `Stockage`, sur l'option `Controller IDE`, cliquez sur l'icône `Ajoute un lecteur optique.`.
+
+![Configuration, section Réseau, onglet Adapter1](images/DABwAFjRGA.png)
+
+Dans la boîte de dialogue `nom_machine_virtuelle - Optical Disk Selector`, cliquez sur le bouton `Ajouter`.
+
+![boîte de dialogue nom_machine_virtuelle - Optical Disk Selector](images/VkpLaQqFAb.png)
+
+Dans la boîte de dialogue `Choisissez un fichier de disque optique virtuel`, parcourez votre ordinateur et sélectionnez l'image de Debian puis cliquez sur le bouton `Ouvrir`.
+
+![boîte de dialogue Choisissez un fichier de disque optique virtuel](images/h6L1g24gWI.png)
+
+Dans la boîte de dialogue `nom_machine_virtuelle - Optical Disk Selector`, sélectionnez l'image disque de Debian et cliquez sur le bouton `Choisir`.
+
+Fermez la boite de dialogue `Paramètres` en cliquant sur le bouton `OK`.
+
+#### Installation de Debian
+
+Sur l'écran principal de VirtualBox, sélectionnez la machine virtuelle et cliquez sur le bouton `Démarrer`.
+
+Lors de l'installation de Debian, utilisez les flèches du clavier pour effectuer une sélection, la touche `ESPACE` pour cocher une option et la touche `ENTREE` pour valider.
+
+Sélectionnez l'option `Install`.
+
+**Très important !** Sélectionnez l'option `Install` et surtout pas l'option `Graphical Install`.
+
+![option install](images/lLTwVS3Nxo.png)
+
+Sélectionnez la langue utilisée lors de l'installation et validez.
+
+**Remarque :** Il est préférable d'utiliser l'anglais pour faciliter la recherche lors de l'apparition de messages d'erreur.
+
+![option langue de l'installation](images/EFzyd1ucqt.png)
+
+Sélectionnez la time zone `United States`.
+
+**Remarque :** Si vous ne trouvez pas le français, sélectionnez l'option `Other`, puis `Europe`, puis `France`. Cependant, un problème va se produire par la suite car le language anglais et la time zone française ne sont pas compatible.
+
+![option time zone](images/YhbvHyUB5Z.png)
+
+Sélectionnez le type de clavier `French`.
+
+![option du clavier](images/Xll4WdA0kH.png)
+
+Saisissez le nom de la machine virtuelle.
+
+![option nom](images/I2a8lPEypk.png)
+
+Saisissez le nom de domaine de la machine virtuelle.
+
+![option nom de domaine](images/y5f5Bhrsen.png)
+
+Saisissez le mot de passe du compte *root*.
+
+**Attention !** Le compte *root* est l'administrateur principal de la machine. Il est très important de sécuriser ce mot de passe.
+
+![option mot de passe root](images/v6oQ2A00IZ.png)
+
+Saisissez à nouveau le mot de passe du compte *root*.
+
+**Remarque :** Vous pouvez afficher les mots de passe en clair si vous cochez la case `Show Password in Clear`.
+
+![option confirmation du mot de passe root](images/AuOWpA6paa.png)
+
+Saisissez le nom complet du premier compte utilisateur.
+
+![option nom complet de compte utilisateur](images/1KPAwe8ZJS.png)
+
+Saisissez l'identifiant du premier compte utilisateur.
+
+![option identifiant de compte utilisateur](images/mH75Bz04KY.png)
+
+Saisissez le mot de passe du compte utilisateur.
+
+![option mot de passe compte utilisateur](images/8d5e17FBiu.png)
+
+Saisissez à nouveau le mot de passe du compte utilisateur.
+
+![option confirmation du mot de passe compte utilisateur](images/VjWPnm4k47.png)
+
+Sélectionnez la time zone de la machine (le choix n'est pas important et pourra être modifié par la suite).
+
+![option time zone](images/6ZaelYh7kW.png)
+
+Sélectionnez l'option `Guided - use entire disk` pour partitionner et utiliser l'intégralité de l'espace disque réservé lors de la configuration de la machine virtuelle.
+
+![option partition de disques](images/wlMDh4TJUN.png)
+
+Vérifiez que le disque sélectionné est bien le bon.
+
+![option sélection du disque à partitionner](images/6aMdRHj2ZM.png)
+
+Sélectionnez l'option de partitionnement `All files in one partition (recommended for new users)`.
+
+![option de partitionnement](images/lnlYleVuDu.png)
 
 
 
+![](images/E77Apuzy0h.png)
 
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
 
 
 
