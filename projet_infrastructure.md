@@ -493,13 +493,26 @@ Editez ensuite le fichier `interfaces` situé dans le dossier `/etc/network/`.
 nano /etc/network/interfaces
 ```
 
-Modifiez le fichier pour qu'il ressemble à l'image suivante :
+Modifiez le fichier pour qu'il ressemble à l'image suivante et sauvegardez :
 
 ![fichier interfaces](images/RDLBsUO40z.png)
 
 - Remplacez les zones pixellisées par l'identifiant de votre périphérique réseau.
 - Remplacez l'adresse IP désirée à la place de celle encadrée.
 
+Relancez les périphériques réseaux.
+
+```
+
+```
+
+Testez que la machine peut bien communiquer avec d'autres.
+
+```
+ping 1.1.1.1
+```
+
+Appuyez sur `CTRL+C` pour stopper le processus.
 
 
 
