@@ -168,10 +168,77 @@ Sélectionnez l'option de partitionnement `All files in one partition (recommend
 
 ![option de partitionnement](images/lnlYleVuDu.png)
 
-
+xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 ![](images/E77Apuzy0h.png)
 
+## Configuration de Debian
+
+### Notions de base
+
+Sur Linux, la plupart des actions se font en ligne de commande. Certains outils ont une gestion automatisée via une interface graphique mais la plupart ne possèdent que des options en ligne de commande.
+
+Une commande commence par le nom du programme/de la commande suivi de ses options. Il faut valider chaque commande  avec la touche ENTRÉE.
+
+Chaque commande possède un manuel (généralement accessible en ligne) pour connaître les options qu'elle propose mais généralement, les débutants préfèrent chercher sur Internet car le manuel est souvent difficile d'accès.
+
+### L'éditeur de texte Nano
+
+La commande `nano` suivie d'un chemin de fichier demande d'ouvrir ce fichier dans un éditeur de texte appelé Nano.
+
+Les commandes de cet éditeur apparaissent au bas de l'écran.
+
+**Attention !** Dans Nano, les commandes s'exécutent directement sans validation par la touche `ENTRÉE`.
+
+- Pour quitter, appuyez sur `CTRL+X`.
+- Pour sauvegarder le fichier édité, appuyez sur `CTRL+O`. Si le fichier existe déjà, son nom apparait en bas de la fenêtre pour vérification. Si c'est un nouveau fichier, vous devez saisir son nom. Validez si vous souhaitez vraiment sauvegarder vos modifications. Pour annuler la sauvegarde, appuyez sur `CTRL+O`.
+
+### Mise à jour du système 
+
+En premier lieu, assurez-vous avant tout que le système est bien à jour. Pour cela, on commence par préciser qu'on veut saisir des commandes en mode super utilisateur (su), l'équivalent du mode Administrateur.
+Saisissez la commande suivante et validez :
+su -
+
+Remarque : Pensez bien à séparer la commande et le tiret avec un espace. L'espace sert de séparateur.
+
+On utilise ensuite la commande apt-get qui permet d'installer, et de gérer la mise à jour de fonctionnalités sur le système. Ici on utilise l'opérateur && pour appeler plusieurs commandes à la suite.
+L'option update met à jour les fonctionnalités déjà présentes.
+L'option upgrade met à niveau (installe la dernière version) les fonctionnalités déjà présentes.
+L'option dist-upgrade met à jour le système (la distribution Linux que vous avez installée).
+
+
+Saisissez la commande suivante et validez :
+apt-get update && apt-get upgrade && apt-get dist-upgrade
+
+Synchronisation de l’horloge système
+
+On s’assure que l’horloge système sera synchronisée grâce à ntp
+apt-get install ntp ntpdate
+
+
+La commande sudo
+
+sudo est une commande qui permet aux utilisateurs d’exécuter des commandes administrateur de manière temporaire. Il faut d'abord l'installer.
+
+Pour l’installer il convient tout d’abord de s’authentifier en tant que root (administrateur principal) sur la machine (si ce n'est pas déjà fait).
+su -
+Pour quitter le compte super utilisateur, saisissez la commande exit :
+exit
+On utilise ensuite la commande apt-get pour installer (option install) la commande sudo.
+
+apt-get install sudo
+
+
+
+La commande sudo n'est accessible qu'aux membres du groupe qui lui sont associés ainsi qu'au compte root. Il faut donc ajouter l’utilisateur créé lors de l’installation au groupe sudo pour qu'il puisse utiliser lui aussi cette commande.
+usermod -aG sudo NOM_UTILISATEUR_CREE_A_L_INSTALLATION 
+
+
+
+
+
+
+
 ![](images/.png)
 ![](images/.png)
 ![](images/.png)
@@ -216,6 +283,8 @@ Sélectionnez l'option de partitionnement `All files in one partition (recommend
 ![](images/.png)
 ![](images/.png)
 ![](images/.png)
+
+[A COMPLETER]
 
 ### Apache
 
@@ -228,6 +297,8 @@ Sélectionnez l'option de partitionnement `All files in one partition (recommend
 ### PHP
 
 [A REDIGER]
+
+![](images/0K7LDMJQpv.png)
 
 #### PHPMyAdmin
 
@@ -310,7 +381,7 @@ XXX.XXX.XXX.XXX domaine.com
 Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress sur le serveur web :
 
 ```
-
+[A REDIGER]
 ```
 
 
@@ -371,7 +442,7 @@ Vider le cache DNS de windows
 ipconfig /flushdns
 ```
 
-Configuration du fichier hosts
+### Configuration du fichier hosts
 
 La machine qui souhaite consulter le site sur le serveur web doit configurer son fichier hosts pour associer le nom de domaine avec l'adresse IP du serveur.
 192.168.10.10 domaine.com
@@ -382,7 +453,9 @@ Sur Linux, le fichier hosts se trouve à l'emplacement /etc/.
 Sur le serveur, le fichier hosts doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP 127.0.0.1.
 127.0.0.1 localhost domaine.com
 
-Savoir si un service est lancé au démarrage
+### Savoir si un service est lancé au démarrage
+
+Redémarrer la machine virtuelle puis saisir la commande suivante :
 
 ```
 service --status-all
@@ -391,5 +464,42 @@ service --status-all
 - Un service avec `+` indique qu'il est démarré.
 - Un service avec `-` indique qu'il est arrêté.
 
+![services](images/U0Hm8fkkGI.png)
+
 Si le service apache2 est démarré, le critère est validé.
+
+### Installer un clone d'image
+
+Cliquez sur le bouton `Importer`.
+
+
+
+
+## Définir une adresse IP fixe sur un réseau
+
+Connectez-vous au réseau.
+
+Avant de définir l'adresse IP, vous devez trouver l'identifiant du périphérique reseau à utiliser. Utilisez la commande suivante et notez l'identifiant du périphérique.
+
+```
+ifconfig
+```
+
+![affichage commande ifconfig](images/uOLA7pJiFE.png)
+
+Editez ensuite le fichier `interfaces` situé dans le dossier `/etc/network/`.
+
+```
+nano /etc/network/interfaces
+```
+
+Modifiez le fichier pour qu'il ressemble à l'image suivante :
+
+![fichier interfaces](images/RDLBsUO40z.png)
+
+- Remplacez les zones pixellisées par l'identifiant de votre périphérique réseau.
+- Remplacez l'adresse IP désirée à la place de celle encadrée.
+
+
+
 
