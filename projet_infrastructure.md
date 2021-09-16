@@ -4,7 +4,7 @@
 
 ### VirtualBox
 
-#### Téléchargement et installation de VirtualBox
+#### Installation
 
 Allez sur le site de [VirtualBox](https://www.virtualbox.org/).
 
@@ -20,7 +20,7 @@ Faites défiler la page précédente, téléchargez et installez `VirtualBox X.X
 
 ![Lien vers VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack](images/cS30n5iX8u.png)
 
-#### Configuration de VirtualBox
+#### Configuration
 
 Exécutez VirtualBox.
 
@@ -64,13 +64,13 @@ Dans la section `Réseau`, onglet `Adapter1`, sélectionnez l'option `Accès par
 
 ![Configuration, section Réseau, onglet Adapter1](images/GeF1kLE2dP.png)
 
-#### Téléchargement de Linux
+#### Téléchargement d'une image Debian
 
 Récupérez l'image de la dernière version de la distribution Debian sur le site [debian.org](https://www.debian.org/).
 
 ![Site debian.org](images/Hi1KvZBDyE.png)
 
-#### Sélection de l'image Linux dans VirtualBox
+#### Sélection de l'image Debian
 
 Dans la section `Stockage`, sur l'option `Controller IDE`, cliquez sur l'icône `Ajoute un lecteur optique.`.
 
@@ -216,14 +216,114 @@ Sélectionnez l'option de partitionnement `All files in one partition (recommend
 ![](images/.png)
 ![](images/.png)
 ![](images/.png)
-![](images/.png)
+
+### Apache
+
+
+
+### MariaDB
+
+
+
+### PHP
+
+
+
+#### PHPMyAdmin
+
+
+
+### Wordpress
+
+#### Installation
+
+Positionnez-vous dans le dossier `/var/www/` :
+
+```
+sudo cd /var/www
+```
+
+Téléchargez l'archive de Worpress :
+
+```
+sudo wget https://wordpress.org/latest.tar.gz
+```
+
+Décompressez l'archive :
+
+```
+sudo tar -xzvf latest.tar.gz
+```
+
+Le dossier `wordpress` conrrespond à la racine du site Wordpress.
+
+Supprimez l'archive devenue inutile.
+
+```
+sudo rm latest.tar.gz
+```
+
+#### Configuration d'un vhost associé à Wordpress
+
+------------
+
+#### Configuration de Wordpress
+
+Vous pouvez accéder au site Wordpress depuis une machine cliente si vous utilisez l'adresse IP de la machine virtuelle dans le navigateur.
+
+```
+XXX.XXX.XXX.XXX
+```
+
+Il vaut mieux toutefois configurer le fichier `hosts` de la machine cliente pour accéder au site en utilisant un nom de domaine.
+
+##### Association du nom de domaine à la machine virtuelle sur le client
+
+Vous devez éditer le fichier `hosts` de votre machine cliente pour associer l'adresse IP de la machine virtuelle où est hébergée le serveur web et le nom de domaine.
+
+Sur Windows, ce fichier `hosts` se situe à l'emplacement `C:\Windows\System32\drivers\etc\`.
+
+**Attention !** Avant de l'ouvrir avec un éditeur de texte, vous devez modifier les droits associés à ce fichier.
+
+Faites un clic droit sur le fichier `hosts` et sélectionnez l'option `Propriétés`.
+
+Cliquez sur le bouton `Modifier...` dans la boite de dialogue `Propriétés de : hosts`.
+
+![boite de dialogue Propriétés de : hosts](images/a5hn1uQJjO.png)
+
+Sélectionnez `Utilisateurs (nom_machine\Utilisateurs)` dans la section `Noms de groupes ou d'utilisateurs` et cochez la case `Contrôle total, Autoriser` dans la section `Autorisations pour Utilisateurs` puis cliquez sur le bouton `OK`.
+
+![boite de dialogue Autorisations pour hosts](images/1uiZcKft99.png)
+
+Sur Linux, ce fichier `hosts` se situe à l'emplacement `/etc/`.
+
+Ouvrez le fichier `hosts` avec un éditeur de texte. Ajoutez une ligne avec l'adresse IP du serveur Linux suivie du nom de domaine.
+
+```
+XXX.XXX.XXX.XXX domaine.com
+```
+
+![fichier hosts édité](images/aWsLRLB5OM.png)
+
+##### Configuration de Wordpress
+
+Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress sur le serveur web :
+
+```
+
+```
 
 
 
 
 
+Accéder à une machine en SSH
 
+```
+ssh -p numero_port identifiant@adresse_machine
+```
 
+![commande ssh](images/jLkZc8YXD0.png)
 
 
 
