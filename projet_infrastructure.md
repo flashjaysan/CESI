@@ -2,43 +2,67 @@
 
 ## Installation d'une machine virtuelle
 
-### Installation et configuration de VirtualBox
+### VirtualBox
 
-#### Télécharger et installer VirtualBox
+#### Téléchargement et installation de VirtualBox
 
-- Allez sur le site de (VirtualBox)[https://www.virtualbox.org/].
-- Sur la page d'accueil, cliquez sur le bouton `Download VirtualBox X.X`.
+Allez sur le site de [VirtualBox](https://www.virtualbox.org/).
 
-!(page d'accueil de VirtualBox)[images/S6iiFo9nRL.png]
+Sur la page d'accueil, cliquez sur le bouton `Download VirtualBox X.X`.
 
-- Téléchargez VirtualBox (ne fermez pas la fenêtre du navigateur)  pour Windows et installez le logiciel.
+![page d'accueil de VirtualBox](images/S6iiFo9nRL.png)
 
-- Faites défiler la page précédente et téléchargez VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack. - Installer le logiciel.
-- Configurer VirtualBox
-- Exécutez VirtualBox.
-- Cliquez sur le menu Machine -> Nouvelle… (CTRL+N).
+Téléchargez et installez VirtualBox pour Windows (ne fermez pas la fenêtre du navigateur).
 
-Dans la boîte de dialogue Nom et système d'exploitation, donnez un nom à la nouvelle machine virtuelle (exemple : debian), sélectionnez un répertoire de destination, choisissez le type Linux et la version Debian (64-bit) puis cliquez sur le bouton Suivant.
+![Lien vers VirtualBox pour Windows](images/xYVh0QU67d.png)
 
-Dans la boîte de dialogue Taille de la mémoire, sélectionnez si possible 2048 en RAM puis cliquez sur le bouton Suivant.
+Faites défiler la page précédente, téléchargez et installez `VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack`.
 
-Dans la boîte de dialogue Disque dur, sélectionnez l'option par défaut Créer un disque dur virtuel maintenant puis cliquez sur le bouton Suivant.
+![Lien vers VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack](images/cS30n5iX8u.png)
 
+#### Configuration de VirtualBox
 
-Dans la boîte de dialogue Type de fichier de disque dur, sélectionnez l'option par défaut VDI (VirtualBox Disk Image)  puis cliquez sur le bouton Suivant.
+Exécutez VirtualBox.
 
-Dans la boîte de dialogue Stockage sur disque dur physique, sélectionnez l'option par défaut Dynamiquement alloué  puis cliquez sur le bouton Suivant.
+Cliquez sur le menu `Machine -> Nouvelle…` (`CTRL+N`).
 
-Dans la boîte de dialogue Emplacement du fichier et taille, laissez le chemin par défaut mais saisissez si possible 20,00 Go  en taille du disque virtuel puis cliquez sur le bouton Créer.
+Dans la boîte de dialogue `Nom et système d'exploitation`, donnez un nom à la nouvelle machine virtuelle (exemple : `debian`), sélectionnez un répertoire de destination, choisissez le type `Linux` et la version `Debian (64-bit)` puis cliquez sur le bouton `Suivant`.
 
-Une nouvelle machine virtuelle apparaît sur l'écran principal de VirtualBox. Sélectionnez cette machine virtuelle et cliquez sur le bouton Configuration.
+![boîte de dialogue Nom et système d'exploitation](images/J4tQbfanDE.png)
 
-Dans la section Système, onglet Processeur, saisissez 2 dans le champ Nombre de processeurs et cochez les Fonctions avancées Activer PAE/NX et Activer VT-x/ADM-Vimbriqué (si possible).
+Dans la boîte de dialogue `Taille de la mémoire`, sélectionnez si possible `2048` en RAM puis cliquez sur le bouton `Suivant`.
 
-Bridge ne marche pas sur le réseau du CESI.
+![boîte de dialogue Taille de la mémoire](images/kBIrk0eu0L.png)
+
+Dans la boîte de dialogue `Disque dur`, sélectionnez l'option par défaut `Créer un disque dur virtuel maintenant` puis cliquez sur le bouton `Suivant`.
+
+![boîte de dialogue Disque dur](images/0dEbxaPYV6.png)
+
+Dans la boîte de dialogue `Type de fichier de disque dur`, sélectionnez l'option par défaut `VDI (VirtualBox Disk Image)` puis cliquez sur le bouton `Suivant`.
+
+![boîte de dialogue Type de fichier de disque dur](images/8VJEG8GdRp.png)
+
+Dans la boîte de dialogue `Stockage sur disque dur physique`, sélectionnez l'option par défaut `Dynamiquement alloué` puis cliquez sur le bouton `Suivant`.
+
+![boîte de dialogue Stockage sur disque dur physique](images/gNhbXkCdOb.png)
+
+Dans la boîte de dialogue `Emplacement du fichier et taille`, laissez le chemin par défaut mais saisissez si possible `20,00` Go en taille du disque virtuel puis cliquez sur le bouton `Créer`.
+
+![boîte de dialogue Emplacement du fichier et taille](images/3nBMEo6oBR.png)
+
+Une nouvelle machine virtuelle apparaît sur l'écran principal de VirtualBox. Sélectionnez cette machine virtuelle et cliquez sur le bouton `Configuration`.
+
+![Ecran principal de VirtualBox et bouton Configuration](images/3Y7d9MlsGx.png)
+
+Dans la section `Système`, onglet `Processeur`, saisissez `2` dans le champ `Nombre de processeurs` et cochez les `Fonctions avancées` `Activer PAE/NX` et `Activer VT-x/ADM-Vimbriqué` (si disponible). Cliquez ensuite sur le bouton `OK`.
+
+![Configuration, section Système, onglet Processeur](images/Dl3cWJysSO.png)
+
+**Remarque :** L'option `Bridge` ne marche pas sur le réseau du CESI.
+
 Bride Adapter.
 
-Récupérer l'iso sur debian.org
+RécupéreZ l'image de la dernière version de la distribution Debian sur le site [debian.org](https://www.debian.org/).
 
 Storage -> Controller ide
 Ajouter un lecteur optique
