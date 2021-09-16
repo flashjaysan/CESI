@@ -239,12 +239,7 @@ usermod -aG sudo NOM_UTILISATEUR_CREE_A_L_INSTALLATION
 
 
 
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
+
 ![](images/.png)
 ![](images/.png)
 ![](images/.png)
@@ -472,8 +467,17 @@ Si le service apache2 est démarré, le critère est validé.
 
 Cliquez sur le bouton `Importer`.
 
+![](images/4xF7iwdYH1.png)
 
+![](images/kTEOieE6Zd.png)
 
+![](images/Wuqa2vBv6g.png)
+
+![](images/zux5l8Nyhy.png)
+
+![](images/.png)
+
+![](images/.png)
 
 ## Définir une adresse IP fixe sur un réseau
 
@@ -503,7 +507,7 @@ Modifiez le fichier pour qu'il ressemble à l'image suivante et sauvegardez :
 Relancez les périphériques réseaux.
 
 ```
-
+ifup identifiant_peripherique
 ```
 
 Testez que la machine peut bien communiquer avec d'autres.
@@ -513,6 +517,25 @@ ping 1.1.1.1
 ```
 
 Appuyez sur `CTRL+C` pour stopper le processus.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
