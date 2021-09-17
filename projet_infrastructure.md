@@ -178,7 +178,7 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 
 Sur Linux, la plupart des actions se font en ligne de commande. Certains outils ont une gestion automatisée via une interface graphique mais la plupart ne possèdent que des options en ligne de commande.
 
-Une commande commence par le nom du programme/de la commande suivi de ses options. Il faut valider chaque commande  avec la touche ENTRÉE.
+Une commande commence par le nom du programme/de la commande suivi de ses options. Il faut valider chaque commande  avec la touche `ENTRÉE`.
 
 Chaque commande possède un manuel (généralement accessible en ligne) pour connaître les options qu'elle propose mais généralement, les débutants préfèrent chercher sur Internet car le manuel est souvent difficile d'accès.
 
@@ -196,88 +196,63 @@ Les commandes de cet éditeur apparaissent au bas de l'écran.
 ### Mise à jour du système 
 
 En premier lieu, assurez-vous avant tout que le système est bien à jour. Pour cela, on commence par préciser qu'on veut saisir des commandes en mode super utilisateur (su), l'équivalent du mode Administrateur.
-Saisissez la commande suivante et validez :
-su -
 
-Remarque : Pensez bien à séparer la commande et le tiret avec un espace. L'espace sert de séparateur.
+Saisissez la commande suivante et validez :
+
+```
+su -
+```
+
+**Remarque :** Pensez bien à séparer la commande et le tiret par un espace. L'espace sert de séparateur.
 
 On utilise ensuite la commande apt-get qui permet d'installer, et de gérer la mise à jour de fonctionnalités sur le système. Ici on utilise l'opérateur && pour appeler plusieurs commandes à la suite.
-L'option update met à jour les fonctionnalités déjà présentes.
-L'option upgrade met à niveau (installe la dernière version) les fonctionnalités déjà présentes.
-L'option dist-upgrade met à jour le système (la distribution Linux que vous avez installée).
+
+- L'option update met à jour les fonctionnalités déjà présentes.
+- L'option upgrade met à niveau (installe la dernière version) les fonctionnalités déjà présentes.
+- L'option dist-upgrade met à jour le système (la distribution Linux que vous avez installée).
 
 
 Saisissez la commande suivante et validez :
+
+```
 apt-get update && apt-get upgrade && apt-get dist-upgrade
+```
 
 Synchronisation de l’horloge système
 
 On s’assure que l’horloge système sera synchronisée grâce à ntp
-apt-get install ntp ntpdate
 
+```
+apt-get install ntp ntpdate
+```
 
 La commande sudo
 
-sudo est une commande qui permet aux utilisateurs d’exécuter des commandes administrateur de manière temporaire. Il faut d'abord l'installer.
+`sudo` est une commande qui permet aux utilisateurs d’exécuter des commandes administrateur de manière temporaire. Il faut d'abord l'installer.
 
 Pour l’installer il convient tout d’abord de s’authentifier en tant que root (administrateur principal) sur la machine (si ce n'est pas déjà fait).
+
+```
 su -
-Pour quitter le compte super utilisateur, saisissez la commande exit :
+```
+
+Pour quitter le compte super utilisateur, saisissez la commande `exit` :
+
+```
 exit
-On utilise ensuite la commande apt-get pour installer (option install) la commande sudo.
+```
 
+On utilise ensuite la commande `apt-get` pour installer (option `install`) la commande sudo.
+
+```
 apt-get install sudo
+```
 
+La commande `sudo` n'est accessible qu'aux membres du groupe qui lui sont associés ainsi qu'au compte root. Il faut donc ajouter l’utilisateur créé lors de l’installation au groupe sudo pour qu'il puisse utiliser lui aussi cette commande.
 
-
-La commande sudo n'est accessible qu'aux membres du groupe qui lui sont associés ainsi qu'au compte root. Il faut donc ajouter l’utilisateur créé lors de l’installation au groupe sudo pour qu'il puisse utiliser lui aussi cette commande.
-usermod -aG sudo NOM_UTILISATEUR_CREE_A_L_INSTALLATION 
-
-
-
-
-
-
-
-
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
+```
+usermod -aG sudo NOM_UTILISATEUR_CREE_A_L_INSTALLATION
+```
 
 [A COMPLETER]
 
@@ -379,10 +354,6 @@ Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress su
 [A REDIGER]
 ```
 
-
-
-
-
 Accéder à une machine en SSH
 
 ```
@@ -390,17 +361,6 @@ ssh -p numero_port identifiant@adresse_machine
 ```
 
 ![commande ssh](images/jLkZc8YXD0.png)
-
-
-
-
-
-
-
-
-
-
-
 
 Connaitre son IP sur Windows
 
@@ -439,14 +399,20 @@ ipconfig /flushdns
 
 ### Configuration du fichier hosts
 
-La machine qui souhaite consulter le site sur le serveur web doit configurer son fichier hosts pour associer le nom de domaine avec l'adresse IP du serveur.
-192.168.10.10 domaine.com
+La machine qui souhaite consulter le site sur le serveur web doit configurer son fichier `hosts` pour associer le nom de domaine avec l'adresse IP du serveur.
 
-Sur Windows, le fichier hosts se trouve à l'emplacement C:/windows/system32/drivers/etc.
-Sur Linux, le fichier hosts se trouve à l'emplacement /etc/.
+```
+XXX.XXX.XXX.XXX domaine.com
+```
 
-Sur le serveur, le fichier hosts doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP 127.0.0.1.
+- Sur Windows, le fichier hosts se trouve à l'emplacement `C:/windows/system32/drivers/etc`.
+- Sur Linux, le fichier hosts se trouve à l'emplacement `/etc/`.
+
+Sur le serveur, le fichier hosts doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP `127.0.0.1`.
+
+```
 127.0.0.1 localhost domaine.com
+```
 
 ### Savoir si un service est lancé au démarrage
 
@@ -474,10 +440,6 @@ Cliquez sur le bouton `Importer`.
 ![](images/Wuqa2vBv6g.png)
 
 ![](images/zux5l8Nyhy.png)
-
-![](images/.png)
-
-![](images/.png)
 
 ## Définir une adresse IP fixe sur un réseau
 
@@ -518,6 +480,19 @@ ping 1.1.1.1
 
 Appuyez sur `CTRL+C` pour stopper le processus.
 
+## Partie 9 Sécuration du site
+
+Installer le module SSL.
+
+Editer le fichier `hosts` du client.
+
+Ajouter les lignes
+
+```
+172.20.10.2 wordpress.preprod.domaine.com preprod.domaine.com
+172.20.10.3 domaine.com
+172.20.10.4 postprod.domaine.com
+```
 
 
 
@@ -537,5 +512,41 @@ Appuyez sur `CTRL+C` pour stopper le processus.
 
 
 
-
-
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
+![](images/.png)
