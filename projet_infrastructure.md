@@ -489,7 +489,7 @@ Editer le fichier `hosts` du client.
 Ajouter les lignes
 
 ```
-172.20.10.2 wordpress.preprod.domaine.com preprod.domaine.com
+172.20.10.2 preprod.domaine.com
 172.20.10.3 domaine.com
 172.20.10.4 postprod.domaine.com
 ```
