@@ -1,5 +1,7 @@
 # Projet Infrastructure
 
+Ce document est librement inspiré du document `Administration de site web` de Marc GONZALEZ.
+
 ## Installation d'une machine virtuelle
 
 ### VirtualBox
@@ -24,7 +26,9 @@ Faites défiler la page précédente, téléchargez et installez `VirtualBox X.X
 
 Exécutez VirtualBox.
 
-Cliquez sur le menu `Machine -> Nouvelle…` (`CTRL+N`).
+Cliquez sur le bouton `Nouvelle` (ou sur le menu `Machine -> Nouvelle…` (`CTRL+N`)).
+
+![VirtualBox icone Nouvelle](images/hc6Ne5e49x.png)
 
 Dans la boîte de dialogue `Nom et système d'exploitation`, donnez un nom à la nouvelle machine virtuelle (exemple : `debian`), sélectionnez un répertoire de destination, choisissez le type `Linux` et la version `Debian (64-bit)` puis cliquez sur le bouton `Suivant`.
 
@@ -60,7 +64,7 @@ Dans la section `Système`, onglet `Processeur`, saisissez `2` dans le champ `No
 
 Dans la section `Réseau`, onglet `Adapter1`, sélectionnez l'option `Accès par pont` dans le `Mode d'accès réseau`. Cliquez ensuite sur le bouton `OK`.
 
-**Remarque :** L'option `Accès par pont` ne marche pas sur le réseau du CESI.
+**Remarque :** L'option `Accès par pont` ne fonctionne pas sur le réseau du CESI.
 
 ![Configuration, section Réseau, onglet Adapter1](images/GeF1kLE2dP.png)
 
@@ -160,7 +164,7 @@ Sélectionnez l'option `Guided - use entire disk` pour partitionner et utiliser 
 
 ![option partition de disques](images/wlMDh4TJUN.png)
 
-Vérifiez que le disque sélectionné est bien le bon.
+Vérifiez que le disque correct est sélectionné.
 
 ![option sélection du disque à partitionner](images/6aMdRHj2ZM.png)
 
@@ -168,9 +172,51 @@ Sélectionnez l'option de partitionnement `All files in one partition (recommend
 
 ![option de partitionnement](images/lnlYleVuDu.png)
 
-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Vérifiez les informations affichées et validez avec l'option `Finish partitionning and write changes to disk`.
 
-![](images/E77Apuzy0h.png)
+![récapitulatif installation Debian](images/E77Apuzy0h.png)
+
+Si vous êtes sûr de vos réglages, positionnez vous sur l'option `Yes` et validez.
+
+![confirmation finale](images/hZ5GA9aVD4.png)
+
+Patientez pendant que Debian s'installe. Lordqu'on vous demande de scanner votre média d'installation, sélectionnez `No`.
+
+![scanner le média d'installation](images/CSFJjD3Kyf.png)
+
+Sélectionnez le plus proche mirroir d'archives.
+
+![sélection du mirroir d'archives le plus proche](images/0Z4ZLcFxsL.png)
+
+Sélectionnez le mirroir par défaut `deb.debian.org`.
+
+![sélection du mirroir d'archive](images/L7esl9JRa4.png)
+
+Saisissez le proxy si vous en avez un. Dans le cas contraire laissez le champ vide.
+
+![sélection du proxy](images/EDS5TotyrT.png)
+
+Choisissez si vous souhaitez envoyer des données anonymes aux développeurs.
+
+![données envoyées au développeurs](images/HM4U7npXzf.png)
+
+Sélectionnez les logiciels à installer. Cochez à minima `standard system utilities`. Pour le reste, vous pouvez laisser par défaut.
+
+![logiciels à installer](images/ythDJm9H9U.png)
+
+Choisissez d'installer le `boot loader GRUB`.
+
+![GRUB option](images/XRKUY3Bb4H.png)
+
+Sélectionnez manuellement le disque où installer GRUB.
+
+![sélection du disque pour GRUB](images/xtqQDQhJkn.png)
+
+Si tout s'est bien passé jusque là, vous pouvez choisir de démarrer le système.
+
+![installation complète](images/Af4WbUxpAi.png)
+
+**Remarque :** Il existe de nombreuses étapes qui peuvent poser problème. Ce document ne peut lister tous les cas de figure alors je vous invite à chercher en ligne en cas de problème lors de cette installation.
 
 ## Configuration de Debian
 
@@ -483,6 +529,22 @@ Appuyez sur `CTRL+C` pour stopper le processus.
 ## Partie 9 Sécuration du site
 
 Installer le module SSL.
+
+```
+sudo a2emod ssl
+```
+
+
+
+
+
+
+
+
+
+
+
+
 
 Editer le fichier `hosts` du client.
 
