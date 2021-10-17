@@ -575,52 +575,104 @@ systemctl restart apache2
 
 #### PHP
 
+Installez l'interpréteur `php`.
 
+```
+apt-get install php
+```
 
-o Installer PHP version 7 (php7.x)
-o Modules PHP nécessaires
-▪ Tester si PHP est bien fonctionnel également
-o Créer un fichier info.php dans le répertoire www/html et y ajouter :
+Saisissez `Y` pour valider l'installation.
 
+![Version de PHP](images/0K7LDMJQpv.png)
+
+Installez la bibliothèque d'interface entre PHP et Apache.
+
+```
+apt-get install libapache2-mod-php
+```
+
+![Place de libapache2-mod-php](images/kdj7X.png)
+
+Positionnez vous dans le dossier `/var/www/html`.
+
+```
+cd /var/www/html
+```
+
+Créer un fichier `info.php`.
+
+```
+nano info.php
+```
+
+Saisissez le texte suivant dans ce fichier et sauvegardez.
+
+```
 <?php
 phpinfo();
 ?>
+```
+
+Testez si PHP est correctement configuré en ouvrant votre navigateur sur votre système principal (pas la machine virtuelle) et en saisissant l'adresse IP de la machine virtuelle suivie de `/info.php`.
+
+![test PHP](images/7WncbCgpBa.png)
+
+#### Installation de la base de données MariaDB
 
 
+Installez la base de données MariaDB.
 
-Afficher ensuite depuis le navigateur de votre machine hôte le fichier. Ce qui 
-affichera la configuration de votre serveur web
-✓ Vous devriez avoir ça (voir Annexe 1 – résultat du fichier info.php)
-Si tout est ok, cette partie est terminée !
-Faites un screenshot du navigateur web. Veillez à stipuler dans le nom du fichier le 
-numéro de la partie validée
-[A REDIGER]
+```
+apt-get install mariadb-server
+```
 
-![](images/0K7LDMJQpv.png)
+Saisissez `Y` pour valider.
+
+#### Configuration de Maria DB
+
+Initialisez MariaDB.
+
+```
+mysql_secure_installation
+```
+
+- Saisissez le mot de passe de l'administrateur de la base de données.
+- Saisissez `n` pour la question `Switch to unix_socket authentication`.
+- Saisissez `n` pour la question `Change the root password`.
+- Saisissez `n` pour la question `Remove anonymous users`.
+- Saisissez `n` pour la question `Disallow root login remotely`.
+- Saisissez `Y` pour la question `Remove test database and access to it`.
+- Saisissez `Y` pour la question `Reload privilege tables now`.
+
+Redémarrez le service associé.
+
+```
+systemctl restart mariadb
+```
+
+Démarrez MariaDB.
+
+```
+mysql
+```
+
+![Exécution de MariaDB](images/3De0stha8s.png)
+
+Pour quitter MariaDB, saisissez la commande `exit`.
+
+```
+exit
+```
 
 #### PHPMyAdmin
 
-[A REDIGER]
+Installez le package `php-mysql` pour que PHP puisse accéder à MariaDB.
 
-#### Base de donnée MariaDB
+```
+apt-get install php-mysql
+```
 
-Installer Une base de données relationnelles (Attention à bien noter le mot de passe root)
-
-[A REDIGER]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Saisissez `Y` pour valider l'installation.
 
 
 
