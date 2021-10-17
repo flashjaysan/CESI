@@ -338,6 +338,12 @@ Appuyez sur `CTRL+C` pour stopper le processus de ping.
 
 Lancez VirtualBox, sélectionnez la machine virtuelle de votre choix et cliquez sur le bouton `Démarrer`.
 
+#### Eteindre la machine virtuelle
+
+```
+shutdown now
+```
+
 #### Voir les utilisateurs existants
 
 ```
