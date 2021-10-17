@@ -200,7 +200,7 @@ Choisissez si vous souhaitez envoyer des données anonymes aux développeurs.
 
 ![données envoyées au développeurs](images/HM4U7npXzf.png)
 
-Sélectionnez les logiciels à installer. Cochez à minima `standard system utilities`. Pour le reste, vous pouvez laisser par défaut.
+Sélectionnez les logiciels à installer. Cochez `standard system utilities`. Laissez le reste décoché.
 
 ![logiciels à installer](images/ythDJm9H9U.png)
 
