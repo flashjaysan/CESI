@@ -1,5 +1,7 @@
 # Projet Infrastructure
 
+*Equipe Lucie, Morgan et Jérôme*
+
 ## Partie 1 : Installation d'une machine virtuelle et de serveurs
 
 ### Déployer une machine virtuelle Linux Server (sans interface)
@@ -302,6 +304,16 @@ La commande `sudo` n'est accessible qu'aux membres du groupe qui lui sont associ
 usermod -aG sudo NOM_UTILISATEUR
 ```
 
+#### Installer un clone d'image Linux
+
+Cliquez sur le bouton `Importer`.
+
+![](images/4xF7iwdYH1.png)
+
+![](images/kTEOieE6Zd.png)
+
+![](images/Wuqa2vBv6g.png)
+
 ### Rendre fonctionnel la machine virtuelle jusqu'à la fin du TP
 
 A démontrer lors de la soutenance.
@@ -314,9 +326,13 @@ Testez que la machine peut bien communiquer avec d'autres.
 ping 1.1.1.1
 ```
 
+![](images/zux5l8Nyhy.png)
+
 Appuyez sur `CTRL+C` pour stopper le processus de ping.
 
 ## Partie 2 : Environnement
+
+### Configuration de l'environnement Linux
 
 #### Démarrer Debian
 
@@ -468,7 +484,7 @@ Vous devez ensuite redémarrer Apache.
 systemctl restart apache2
 ```
 
-#### Apache est en démarrage automatique
+#### Vérifier qu'Apache est en démarrage automatique
 
 Pour savoir si un service est lancé au démarrage, redémarrez la machine virtuelle puis saisissez la commande suivante :
 
@@ -483,7 +499,7 @@ service --status-all
 
 Le service `apache2` doit être démarré.
 
-#### Apache fonctionne correctement
+#### Vérifier qu'Apache fonctionne correctement
 
 Testez qu'Apache fonctionne bien en ouvrant un navigateur sur votre système principal (pas la machine virtuelle) et en saisissant l'adresse IP de votre machine.
 
@@ -496,19 +512,70 @@ cd /var/www/html
 ls
 ```
 
+#### Configurer un virtual host pour Apache
+
+Un virtual host est un fichier de configuration qui associe un chemin de fichiers à un port réseau. Cela permet d'accéder à différents chemin sur la même adresse en changeant simplement de port.
+
+Créer un dossier `/var/www/html/nom_domaine/public` pour stocker le site. Le dossier `public` permet d'indiquer quels fichiers sont accessibles.
+
+```
+mkdir -p /var/www/html/nom_domaine/public
+```
+
+**Remarque :** L'option `-p` crée un dossier ainsi que les dossiers parents si ceux ci n'existent pas.
+
+Si on veut que l'utilisateur normal puisse accéder à ce dossier, nous devons lui attribuer les droits.
+
+```
+chown -R nom_utilisateur:nom_utilisateur /var/www/html/domaine.com/public
+```
+
+**Remarque :** L'option `-R` permet d'attribuer les droits récursivement dans tous les sous-dossiers.
+
+Editez ensuite le fichier de configuration `/etc/apache2/sites-available/nom_domaine.conf`.
+
+```
+nano /etc/apache2/sites-available/nom_domaine.conf
+```
+
+Saisissez les informations sur ce modèle :
+
+```
+<VirtualHost *:80>
+    ServerAdmin admin@nom_domaine
+    ServerName nom_domaine
+    ServerAlias www.nom_domaine
+    DocumentRoot /var/www/html/nom_domaine/public
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    <Directory /var/www/html/nom_domaine/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+    </Directory>
+</VirtualHost>
+```
+
+**Attention !** Pensez bien à sauvegarder votre fichier !
+
+![fichier vhost Apache](images/6jTDdJy3nL.png)
+
+**Remarque :** Sur l'image précédente, il y a une faute sur `FollowSymLinks` ce qui a provoqué une erreur. Soyez très vigilant sur ce que vous saisissez.
+
+On doit ensuite activer ce fichier de configuration.
+
+```
+a2ensite nom_domaine.conf
+```
+
+Et on doit à nouveau redémarrer Apache.
+
+```
+systemctl restart apache2
+```
+
+#### PHP
 
 
-
-
-
-
-
-
-
-
-
-
-▪ Installer les outils suivants : 
 
 o Installer PHP version 7 (php7.x)
 o Modules PHP nécessaires
@@ -520,7 +587,6 @@ phpinfo();
 ?>
 
 
-o Une base de données relationnelles (Attention à bien noter le mot de passe root)
 
 Afficher ensuite depuis le navigateur de votre machine hôte le fichier. Ce qui 
 affichera la configuration de votre serveur web
@@ -528,9 +594,6 @@ affichera la configuration de votre serveur web
 Si tout est ok, cette partie est terminée !
 Faites un screenshot du navigateur web. Veillez à stipuler dans le nom du fichier le 
 numéro de la partie validée
-
-#### PHP
-
 [A REDIGER]
 
 ![](images/0K7LDMJQpv.png)
@@ -539,11 +602,13 @@ numéro de la partie validée
 
 [A REDIGER]
 
-#### MariaDB
+#### Base de donnée MariaDB
+
+Installer Une base de données relationnelles (Attention à bien noter le mot de passe root)
 
 [A REDIGER]
 
-#### Wordpress
+#### CMS Wordpress
 
 ##### Installation
 
@@ -700,8 +765,7 @@ Sur le serveur, le fichier hosts doit également être configuré car le serveur
 ## Partie 3 : Premier site
 
 Une fois Apache et PHP bien fonctionnels, vous pouvez créer une première page web.
-INFO : Vous aurez pris le soin d’affecter une IP fixe sur votre VM, ce qui simplifiera les différents tests, 
-vous pouvez même créer un alias dans le fichier hosts de la machine hôte.
+INFO : Vous aurez pris le soin de créer un alias dans le fichier hosts de la machine hôte.
 Se rendre dans le dossier www du serveur web (VM) :
 ▪ Créer un nouveau dossier « monsite » à la racine 
 ▪ Créer un fichier « index.php » dans ce nouveau dossier 
@@ -978,17 +1042,7 @@ Vous pouvez vous informer ici : https://linuxfr.org/forums/linux-general/posts/t
 
 
 
-### Installer un clone d'image
 
-Cliquez sur le bouton `Importer`.
-
-![](images/4xF7iwdYH1.png)
-
-![](images/kTEOieE6Zd.png)
-
-![](images/Wuqa2vBv6g.png)
-
-![](images/zux5l8Nyhy.png)
 
 
 
@@ -1012,3 +1066,12 @@ Ajouter les lignes
 172.20.10.3 domaine.com
 172.20.10.4 postprod.domaine.com
 ```
+
+
+
+
+
+## Choses sautées dans le document de Marc
+
+- p26 SSH
+- 
