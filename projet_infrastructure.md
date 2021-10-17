@@ -608,145 +608,7 @@ Installer Une base de données relationnelles (Attention à bien noter le mot de
 
 [A REDIGER]
 
-#### CMS Wordpress
 
-##### Installation
-
-Positionnez-vous dans le dossier `/var/www/` :
-
-```
-sudo cd /var/www
-```
-
-Téléchargez l'archive de Worpress :
-
-```
-sudo wget https://wordpress.org/latest.tar.gz
-```
-
-Décompressez l'archive :
-
-```
-sudo tar -xzvf latest.tar.gz
-```
-
-Le dossier `wordpress` conrrespond à la racine du site Wordpress.
-
-Supprimez l'archive devenue inutile.
-
-```
-sudo rm latest.tar.gz
-```
-
-#### Configuration d'un vhost associé à Wordpress
-
-[A REDIGER]
-
-#### Configuration de Wordpress
-
-Vous pouvez accéder au site Wordpress depuis une machine cliente si vous utilisez l'adresse IP de la machine virtuelle dans le navigateur.
-
-```
-XXX.XXX.XXX.XXX
-```
-
-Il vaut mieux toutefois configurer le fichier `hosts` de la machine cliente pour accéder au site en utilisant un nom de domaine.
-
-##### Association du nom de domaine à la machine virtuelle sur le client
-
-Vous devez éditer le fichier `hosts` de votre machine cliente pour associer l'adresse IP de la machine virtuelle où est hébergée le serveur web et le nom de domaine.
-
-Sur Windows, ce fichier `hosts` se situe à l'emplacement `C:\Windows\System32\drivers\etc\`.
-
-**Attention !** Avant de l'ouvrir avec un éditeur de texte, vous devez modifier les droits associés à ce fichier.
-
-Faites un clic droit sur le fichier `hosts` et sélectionnez l'option `Propriétés`.
-
-Cliquez sur le bouton `Modifier...` dans la boite de dialogue `Propriétés de : hosts`.
-
-![boite de dialogue Propriétés de : hosts](images/a5hn1uQJjO.png)
-
-Sélectionnez `Utilisateurs (nom_machine\Utilisateurs)` dans la section `Noms de groupes ou d'utilisateurs` et cochez la case `Contrôle total, Autoriser` dans la section `Autorisations pour Utilisateurs` puis cliquez sur le bouton `OK`.
-
-![boite de dialogue Autorisations pour hosts](images/1uiZcKft99.png)
-
-Sur Linux, ce fichier `hosts` se situe à l'emplacement `/etc/`.
-
-Ouvrez le fichier `hosts` avec un éditeur de texte. Ajoutez une ligne avec l'adresse IP du serveur Linux suivie du nom de domaine.
-
-```
-XXX.XXX.XXX.XXX domaine.com
-```
-
-![fichier hosts édité](images/aWsLRLB5OM.png)
-
-##### Configuration de Wordpress
-
-Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress sur le serveur web :
-
-```
-[A REDIGER]
-```
-
-Accéder à une machine en SSH
-
-```
-ssh -p numero_port identifiant@adresse_machine
-```
-
-![commande ssh](images/jLkZc8YXD0.png)
-
-Connaitre son IP sur Windows
-
-Commande `ipconfig`
-```
-Carte réseau sans fil Wi-Fi :
-    ...
-   Adresse IPv4. . . . . . . . . . . . . .: XXX.XXX.XXX.XXX
-   ```
-
-Connaître son IP sur Linux
-
-Commande `hostname -I`
-
-Nom de domaine pour notre projet : group2.local
-
-Créer une IP statique
-
-Vérifier que le paquet `ifupdown` est installé.
-
-```
-ifup
-```
-
-S'il n'est pas installé :
-
-```
-sudo apt-get install ifupdown
-```
-
-Vider le cache DNS de windows
-
-```
-ipconfig /flushdns
-```
-
-### Configuration du fichier hosts
-
-La machine qui souhaite consulter le site sur le serveur web doit configurer son fichier `hosts` pour associer le nom de domaine avec l'adresse IP du serveur.
-
-```
-XXX.XXX.XXX.XXX domaine.com
-```
-
-- Sur Windows, le fichier hosts se trouve à l'emplacement `C:/windows/system32/drivers/etc`.
-- Sur Linux, le fichier hosts se trouve à l'emplacement `/etc/`.
-
-Sur le serveur, le fichier hosts doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP `127.0.0.1`.
-
-```
-127.0.0.1 localhost domaine.com
-```
 
 
 
@@ -872,6 +734,11 @@ Dans cette partie nous allons vous demander d’installer un nouveau site reposa
 ▪ Ajouter un ou deux contenus
 ▪ Personnaliser le site comme bon vous semble
 
+
+
+
+
+
 ### Un CMS est déployé sur le serveur web il est fonctionnel, accessible et l'on peut modifier le contenu
 
 
@@ -879,6 +746,152 @@ Dans cette partie nous allons vous demander d’installer un nouveau site reposa
 ### Un vhost est configuré et permet d'accéder au site autrement que part l'IP
 
 
+
+
+
+
+### Installation du CMS Wordpress
+
+Positionnez-vous dans le dossier `/var/www/`.
+
+```
+cd /var/www
+```
+
+Téléchargez l'archive de Worpress :
+
+```
+wget https://wordpress.org/latest.tar.gz
+```
+
+Décompressez l'archive :
+
+```
+tar -xzvf latest.tar.gz
+```
+
+Le dossier `wordpress` conrrespond à la racine du site Wordpress.
+
+Supprimez l'archive devenue inutile.
+
+```
+rm latest.tar.gz
+```
+
+### Configuration de Wordpress
+
+Vous pouvez accéder au site Wordpress depuis une machine cliente si vous utilisez l'adresse IP de la machine virtuelle dans le navigateur.
+
+```
+XXX.XXX.XXX.XXX
+```
+
+Il vaut mieux toutefois configurer le fichier `hosts` de la machine cliente pour accéder au site en utilisant un nom de domaine.
+
+#### Association du nom de domaine à la machine virtuelle sur le client
+
+Vous devez éditer le fichier `hosts` de votre machine cliente pour associer l'adresse IP de la machine virtuelle où est hébergée le serveur web et le nom de domaine.
+
+Sur Windows, ce fichier `hosts` se situe à l'emplacement `C:\Windows\System32\drivers\etc\`.
+
+**Attention !** Avant de l'ouvrir avec un éditeur de texte, vous devez modifier les droits associés à ce fichier.
+
+Faites un clic droit sur le fichier `hosts` et sélectionnez l'option `Propriétés`.
+
+Cliquez sur le bouton `Modifier...` dans la boite de dialogue `Propriétés de : hosts`.
+
+![boite de dialogue Propriétés de : hosts](images/a5hn1uQJjO.png)
+
+Sélectionnez `Utilisateurs (nom_machine\Utilisateurs)` dans la section `Noms de groupes ou d'utilisateurs` et cochez la case `Contrôle total, Autoriser` dans la section `Autorisations pour Utilisateurs` puis cliquez sur le bouton `OK`.
+
+![boite de dialogue Autorisations pour hosts](images/1uiZcKft99.png)
+
+Sur Linux, ce fichier `hosts` se situe à l'emplacement `/etc/`.
+
+Ouvrez le fichier `hosts` avec un éditeur de texte. Ajoutez une ligne avec l'adresse IP du serveur Linux suivie du nom de domaine.
+
+```
+XXX.XXX.XXX.XXX domaine.com
+```
+
+![fichier hosts édité](images/aWsLRLB5OM.png)
+
+#### Configuration de Wordpress
+
+Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress sur le serveur web :
+
+```
+[A REDIGER]
+```
+
+### Configuration d'un vhost pour Wordpress
+
+[A REDIGER]
+
+
+
+
+
+
+#### Accéder à une machine en SSH
+
+```
+ssh -p numero_port identifiant@adresse_machine
+```
+
+![commande ssh](images/jLkZc8YXD0.png)
+
+#### Connaitre son IP sur Windows
+
+Commande `ipconfig`
+```
+Carte réseau sans fil Wi-Fi :
+    ...
+   Adresse IPv4. . . . . . . . . . . . . .: XXX.XXX.XXX.XXX
+   ```
+
+#### Connaître son IP sur Linux
+
+Commande `hostname -I`
+
+Nom de domaine pour notre projet : group2.local
+
+#### Créer une IP statique
+
+Vérifier que le paquet `ifupdown` est installé.
+
+```
+ifup
+```
+
+S'il n'est pas installé :
+
+```
+sudo apt-get install ifupdown
+```
+
+Vider le cache DNS de windows
+
+```
+ipconfig /flushdns
+```
+
+### Configuration du fichier hosts
+
+La machine qui souhaite consulter le site sur le serveur web doit configurer son fichier `hosts` pour associer le nom de domaine avec l'adresse IP du serveur.
+
+```
+XXX.XXX.XXX.XXX domaine.com
+```
+
+- Sur Windows, le fichier hosts se trouve à l'emplacement `C:/windows/system32/drivers/etc`.
+- Sur Linux, le fichier hosts se trouve à l'emplacement `/etc/`.
+
+Sur le serveur, le fichier hosts doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP `127.0.0.1`.
+
+```
+127.0.0.1 localhost domaine.com
+```
 
 ## Partie 7 : Serveur Pré-prod - Prod
 
@@ -1066,10 +1079,6 @@ Ajouter les lignes
 172.20.10.3 domaine.com
 172.20.10.4 postprod.domaine.com
 ```
-
-
-
-
 
 ## Choses sautées dans le document de Marc
 
