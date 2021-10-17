@@ -1,12 +1,12 @@
 # Projet Infrastructure
 
-Ce document est librement inspiré du document `Administration de site web` de Marc GONZALEZ.
+## Partie 1 : Installation d'une machine virtuelle et de serveurs
 
-## Installation d'une machine virtuelle
+### Déployer une machine virtuelle Linux Server (sans interface)
 
-### VirtualBox
+Cette section est librement inspirée du document [`Administration de site web`](https://docs.google.com/document/d/15ky8SdX2-H7chityNs0wYTlIuz7jJA-hsECiCAqkCr8/edit) de Marc GONZALEZ.
 
-#### Installation
+#### Installation de VirtualBox
 
 Allez sur le site de [VirtualBox](https://www.virtualbox.org/).
 
@@ -22,7 +22,7 @@ Faites défiler la page précédente, téléchargez et installez `VirtualBox X.X
 
 ![Lien vers VirtualBox 6.1.26 Oracle VM VirtualBox Extension Pack](images/cS30n5iX8u.png)
 
-#### Configuration
+#### Configuration de VirtualBox
 
 Exécutez VirtualBox.
 
@@ -202,7 +202,7 @@ Choisissez si vous souhaitez envoyer des données anonymes aux développeurs.
 
 Sélectionnez les logiciels à installer. Cochez `standard system utilities`. Laissez le reste décoché.
 
-![logiciels à installer](images/ythDJm9H9U.png)
+![logiciels à installer](images/87BYu7qe7W.png)
 
 Choisissez d'installer le `boot loader GRUB`.
 
@@ -218,9 +218,9 @@ Si tout s'est bien passé jusque là, vous pouvez choisir de démarrer le systè
 
 **Remarque :** Il existe de nombreuses étapes qui peuvent poser problème. Ce document ne peut lister tous les cas de figure alors je vous invite à chercher en ligne en cas de problème lors de cette installation.
 
-## Configuration de Debian
+#### Configuration de Debian
 
-### Notions de base
+##### Notions de base
 
 Sur Linux, la plupart des actions se font en ligne de commande. Certains outils ont une gestion automatisée via une interface graphique mais la plupart ne possèdent que des options en ligne de commande.
 
@@ -228,9 +228,9 @@ Une commande commence par le nom du programme/de la commande suivi de ses option
 
 Chaque commande possède un manuel (généralement accessible en ligne) pour connaître les options qu'elle propose mais généralement, les débutants préfèrent chercher sur Internet car le manuel est souvent difficile d'accès.
 
-### L'éditeur de texte Nano
+##### L'éditeur de texte Nano
 
-La commande `nano` suivie d'un chemin de fichier demande d'ouvrir ce fichier dans un éditeur de texte appelé Nano.
+La commande `nano` suivie d'un chemin de fichier demande d'ouvrir ce fichier dans un éditeur de texte appelé *Nano*.
 
 Les commandes de cet éditeur apparaissent au bas de l'écran.
 
@@ -239,9 +239,9 @@ Les commandes de cet éditeur apparaissent au bas de l'écran.
 - Pour quitter, appuyez sur `CTRL+X`.
 - Pour sauvegarder le fichier édité, appuyez sur `CTRL+O`. Si le fichier existe déjà, son nom apparait en bas de la fenêtre pour vérification. Si c'est un nouveau fichier, vous devez saisir son nom. Validez si vous souhaitez vraiment sauvegarder vos modifications. Pour annuler la sauvegarde, appuyez sur `CTRL+O`.
 
-### Mise à jour du système 
+##### Mise à jour du système 
 
-En premier lieu, assurez-vous avant tout que le système est bien à jour. Pour cela, on commence par préciser qu'on veut saisir des commandes en mode super utilisateur (su), l'équivalent du mode Administrateur.
+En premier lieu, assurez-vous avant tout que le système est bien à jour. Pour cela, on commence par préciser qu'on veut saisir des commandes en mode super utilisateur (`su`), l'équivalent du mode Administrateur.
 
 Saisissez la commande suivante et validez :
 
@@ -251,11 +251,11 @@ su -
 
 **Remarque :** Pensez bien à séparer la commande et le tiret par un espace. L'espace sert de séparateur.
 
-On utilise ensuite la commande apt-get qui permet d'installer, et de gérer la mise à jour de fonctionnalités sur le système. Ici on utilise l'opérateur && pour appeler plusieurs commandes à la suite.
+On utilise ensuite la commande `apt-get` qui permet d'installer, et de gérer la mise à jour de fonctionnalités sur le système. Ici on utilise l'opérateur `&&` pour appeler plusieurs commandes à la suite.
 
-- L'option update met à jour les fonctionnalités déjà présentes.
-- L'option upgrade met à niveau (installe la dernière version) les fonctionnalités déjà présentes.
-- L'option dist-upgrade met à jour le système (la distribution Linux que vous avez installée).
+- L'option `update` met à jour les fonctionnalités déjà présentes.
+- L'option `upgrade` met à niveau (installe la dernière version) les fonctionnalités déjà présentes.
+- L'option `dist-upgrade` met à jour le système (la distribution Linux que vous avez installée).
 
 
 Saisissez la commande suivante et validez :
@@ -264,19 +264,21 @@ Saisissez la commande suivante et validez :
 apt-get update && apt-get upgrade && apt-get dist-upgrade
 ```
 
-Synchronisation de l’horloge système
+##### Synchronisation de l’horloge système
 
-On s’assure que l’horloge système sera synchronisée grâce à ntp
+On s’assure que l’horloge système sera synchronisée grâce à `ntp`
 
 ```
 apt-get install ntp ntpdate
 ```
 
-La commande sudo
+Saisissez `Y` pour confirmer l'installation.
+
+##### La commande sudo
 
 `sudo` est une commande qui permet aux utilisateurs d’exécuter des commandes administrateur de manière temporaire. Il faut d'abord l'installer.
 
-Pour l’installer il convient tout d’abord de s’authentifier en tant que root (administrateur principal) sur la machine (si ce n'est pas déjà fait).
+Pour l’installer il convient tout d’abord de s’authentifier en tant que `root` (administrateur principal) sur la machine (si ce n'est pas déjà fait).
 
 ```
 su -
@@ -294,23 +296,240 @@ On utilise ensuite la commande `apt-get` pour installer (option `install`) la co
 apt-get install sudo
 ```
 
-La commande `sudo` n'est accessible qu'aux membres du groupe qui lui sont associés ainsi qu'au compte root. Il faut donc ajouter l’utilisateur créé lors de l’installation au groupe sudo pour qu'il puisse utiliser lui aussi cette commande.
+La commande `sudo` n'est accessible qu'aux membres du groupe qui lui sont associés ainsi qu'au compte `root`. Il faut donc ajouter l’utilisateur créé lors de l’installation au groupe sudo pour qu'il puisse utiliser lui aussi cette commande.
 
 ```
-usermod -aG sudo NOM_UTILISATEUR_CREE_A_L_INSTALLATION
+usermod -aG sudo NOM_UTILISATEUR
 ```
 
-[A COMPLETER]
+### Rendre fonctionnel la machine virtuelle jusqu'à la fin du TP
 
-### Apache
+A démontrer lors de la soutenance.
 
-[A REDIGER]
+### Permettre l'accès au réseau internet sur la machine virtuelle
 
-### MariaDB
+Testez que la machine peut bien communiquer avec d'autres.
 
-[A REDIGER]
+```
+ping 1.1.1.1
+```
 
-### PHP
+Appuyez sur `CTRL+C` pour stopper le processus de ping.
+
+## Partie 2 : Environnement
+
+#### Démarrer Debian
+
+Lancez VirtualBox, sélectionnez la machine virtuelle de votre choix et cliquez sur le bouton `Démarrer`.
+
+#### Voir les utilisateurs existants
+
+```
+nano /etc/passwd
+```
+
+![/etc/passwd](images/XbtVKIGFFl.png)
+
+#### Créer un utilisateur
+
+Lors de l'installation de Debian, vous avez créé un premier utilisateur. Si vous avez besoin d'en créer d'autres, utilisez la commande `useradd`.
+
+```
+useradd nom_utilisateur
+```
+
+Vous devez également définir un mot de passe avec la commande `password`.
+
+```
+passwd nom_utilisateur
+```
+
+Saisissez et confirmer le nouveau mot de passe pour cet utilisateur.
+
+#### Supprimer un utilisateur
+
+Utilisez la commande `userdel`.
+
+```
+userdel nom_utilisateur
+```
+
+#### Voir le nom de la machine
+
+Le nom de la machine est stocké dans le fichier `/etc/hostname`. Pour le consulter, saisissez la commande :
+
+```
+nano /etc/hostname
+```
+
+Vous pouvez également utiliser la commande `hostname` sans paramètre pour afficher directement le nom actuel de la machine.
+
+```
+hostname
+```
+
+#### Modifier le nom de la machine
+
+Vous pouvez modifier temporairement (jusqu'au prochain redémarrage) le nom de machine via la commande `hostname` suivie du nouveau nom.
+
+```
+hostname nouveau_nom
+```
+
+**Remarque :** Cette technique ne modifie pas le fichier `/etc/hostname`.
+
+Pour modifier de manière permanente le nom de machine, le plus simple reste encore d'éditer le fichier `/etc/hostname`.
+
+```
+nano /etc/hostname
+```
+
+#### Définir une adresse IP fixe sur un réseau
+
+Connectez-vous au réseau.
+
+Avant de définir l'adresse IP, vous devez trouver l'identifiant du périphérique réseau à utiliser. Utilisez la commande `ifconfig` (ou `ip a` si la commande précédente est indisponible) et notez l'identifiant du périphérique réseau.
+
+```
+ifconfig
+```
+
+ou
+
+```
+ip a
+```
+
+![affichage commande ifconfig](images/uOLA7pJiFE.png)
+
+Editez ensuite le fichier `interfaces` situé dans le dossier `/etc/network/`.
+
+```
+nano /etc/network/interfaces
+```
+
+Modifiez le fichier pour qu'il ressemble à l'image suivante et sauvegardez :
+
+![fichier interfaces](images/RDLBsUO40z.png)
+
+- Remplacez les zones pixellisées par l'identifiant de votre périphérique réseau.
+- Remplacez l'adresse IP désirée à la place de celle encadrée.
+
+Supprimez également la ligne d'IPv6 si elle est présente.
+
+Relancez les périphériques réseaux avec la commande suivante :
+
+```
+ifup identifiant_peripherique
+```
+
+Si un message affiche que le périphérique est déjà configuré, utiliser d'abord la commande `ifdown` avant `ifup`.
+
+```
+ifdown identifiant_peripherique
+ifup identifiant_peripherique
+```
+
+Vérifiez que votre IP est bien modifiée.
+
+```
+ip a
+```
+
+Testez que la machine peut bien communiquer avec d'autres.
+
+```
+ping 1.1.1.1
+```
+
+Appuyez sur `CTRL+C` pour stopper le processus de ping.
+
+### Installer, configurer et utiliser des outils reconnus pour permettre d’héberger des solutions web en toute fiabilité
+
+#### Installation d'Apache
+
+Saisissez la commande suivante :
+
+```
+apt-get install apache2
+```
+
+Saisissez `Y` pour valider l'installation d'Apache.
+
+Vous devez installer des modules supplémentaires non installés par défaut.
+
+```
+a2enmod rewrite ssl actions include
+```
+
+Vous devez ensuite redémarrer Apache.
+
+```
+systemctl restart apache2
+```
+
+#### Apache est en démarrage automatique
+
+Pour savoir si un service est lancé au démarrage, redémarrez la machine virtuelle puis saisissez la commande suivante :
+
+```
+service --status-all
+```
+
+- Un service avec `+` indique qu'il est démarré.
+- Un service avec `-` indique qu'il est arrêté.
+
+![services](images/U0Hm8fkkGI.png)
+
+Le service `apache2` doit être démarré.
+
+#### Apache fonctionne correctement
+
+Testez qu'Apache fonctionne bien en ouvrant un navigateur sur votre système principal (pas la machine virtuelle) et en saisissant l'adresse IP de votre machine.
+
+![Serveur web Apache](images/43FPFAHahM.png)
+
+La racine des fichiers web se trouvent à l'emplacement `/var/www/html`.
+
+```
+cd /var/www/html
+ls
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+▪ Installer les outils suivants : 
+
+o Installer PHP version 7 (php7.x)
+o Modules PHP nécessaires
+▪ Tester si PHP est bien fonctionnel également
+o Créer un fichier info.php dans le répertoire www/html et y ajouter :
+
+<?php
+phpinfo();
+?>
+
+
+o Une base de données relationnelles (Attention à bien noter le mot de passe root)
+
+Afficher ensuite depuis le navigateur de votre machine hôte le fichier. Ce qui 
+affichera la configuration de votre serveur web
+✓ Vous devriez avoir ça (voir Annexe 1 – résultat du fichier info.php)
+Si tout est ok, cette partie est terminée !
+Faites un screenshot du navigateur web. Veillez à stipuler dans le nom du fichier le 
+numéro de la partie validée
+
+#### PHP
 
 [A REDIGER]
 
@@ -320,9 +539,13 @@ usermod -aG sudo NOM_UTILISATEUR_CREE_A_L_INSTALLATION
 
 [A REDIGER]
 
-### Wordpress
+#### MariaDB
 
-#### Installation
+[A REDIGER]
+
+#### Wordpress
+
+##### Installation
 
 Positionnez-vous dans le dossier `/var/www/` :
 
@@ -460,20 +683,300 @@ Sur le serveur, le fichier hosts doit également être configuré car le serveur
 127.0.0.1 localhost domaine.com
 ```
 
-### Savoir si un service est lancé au démarrage
 
-Redémarrer la machine virtuelle puis saisir la commande suivante :
 
-```
-service --status-all
-```
 
-- Un service avec `+` indique qu'il est démarré.
-- Un service avec `-` indique qu'il est arrêté.
 
-![services](images/U0Hm8fkkGI.png)
 
-Si le service apache2 est démarré, le critère est validé.
+
+
+
+
+
+
+
+
+
+## Partie 3 : Premier site
+
+Une fois Apache et PHP bien fonctionnels, vous pouvez créer une première page web.
+INFO : Vous aurez pris le soin d’affecter une IP fixe sur votre VM, ce qui simplifiera les différents tests, 
+vous pouvez même créer un alias dans le fichier hosts de la machine hôte.
+Se rendre dans le dossier www du serveur web (VM) :
+▪ Créer un nouveau dossier « monsite » à la racine 
+▪ Créer un fichier « index.php » dans ce nouveau dossier 
+▪ Ajouter du code PHP dans le fichier (une commande echo par exemple) 
+▪ Essayer d’atteindre le site depuis sa machine hôte
+
+### L'apprenant est capable de se rendre dans le répertoire "www"
+
+
+
+### Il y a un ou plusieurs "projets" dans le répertoire "www" avec des fichiers PHP
+
+
+
+### Les projets sont accessibles depuis un navigateur (machine hôte ou autre machine du réseau)
+
+
+
+## Partie 4 : Accès au site et sécurisation
+
+Sécurité 
+▪ Installer SSH1
+si nécessaire
+▪ Configurer SSH si besoin
+▪ S’assurer qu’il est bien possible de se connecter en SSH depuis une autre machine2
+➢ Vous devez générer une authentification par certificat si ce n’est pas déjà fait
+▪ Mise en place d’un mécanisme de sécurité pour éviter les attaques brutes forces (de mot de 
+passe)
+▪ Configurer le pare-feu en adéquation avec votre stratégie (règles / ports)
+INFO : Il devra être possible d’ajouter à tout moment un nouvel utilisateur « distant » pouvant se 
+connecter en SSH avec son compte.
+Client FTP 
+Tester depuis la machine hôte de se connecter avec un client FTP (exemple : WinSCP)
+➢ Créer 2 utilisateurs virtuels « Dev1 » et « Dev2 » qui pourront interagir avec le serveur web
+• Chaque utilisateur (développeur) aura un répertoire virtuel
+• Chaque utilisateur accédera par défaut au répertoire « monsite » et ne pourra pas en 
+sortir (jail)
+• Les utilisateurs ne peuvent pas modifier les fichiers « systèmes »
+➢ Se connecter en SFTP avec chaque utilisateur (tester)
+➢ Modifier le fichier par défaut du site
+Tester en affichant la page web « modifiée » dans le navigateur.
+
+
+### SSH est installé et fonctionnel. L'apprenant est capable d'identifier le répertoire contenant les fichiers utilisés par SSH (.ssh)
+
+
+
+### Il est possible de se connecter en SSH depuis une autre machine du réseau (et de manière sécurisée et renforcée)
+
+
+
+### Le Pare-feu est configuré en adéquation avec la stratégie
+
+
+
+### Il existe 2 utilisateurs virtuels (Dev1 et Dev2)
+
+
+
+### Chaque utilisateur virtuel accède au dossier "monsite" et ne peut pas en sortir
+
+
+
+### Il est possible de se connecter en sftp depuis une autre machine et de modifier le fichier par défaut du site (monsite) et les changement sont visibles depuis un navigateur
+
+
+
+## Partie 5 : La base de données
+
+Se connecter à la base de données
+Exemple :
+mysql -u root -p
+Créer une base de données, vous pourrez la nommer cesibdd
+➢ Cette base de données sera utile pour déployer un site (CMS) dans la suite de ce projet
+Créer un nouvel utilisateur « dibdd » et attribuez-lui les privilèges maximum sur cette nouvelle base 
+de données
+➢ Ce nouvel utilisateur sera utilisé pour se connecter à la base et accéder aux données dans la 
+suite de ce projet
+
+### Une base de données est existante et opérationnelle
+
+
+
+### L'apprenant sait se connecter à la base de données en ligne de commande avec un utilisateur autre que "root".  Cet utilisateur dispose des droits suffisants
+
+
+
+## Partie 6 : Installation d'un nouveau site
+
+Dans cette partie nous allons vous demander d’installer un nouveau site reposant sur un CMS 
+(Wordpress ou Drupal) sur votre serveur actuel.
+
+1. Téléchargement, installation & configuration 
+▪ Télécharger sur votre serveur la dernière version du CMS.
+▪ Placer le CMS dans le répertoire de destination.
+➢ Vous devrez le placer directement dans le répertoire www d’Apache
+➢ Veillez à bien conserver votre premier dossier monsite (du dossier www)
+▪ Installer le CMS
+➢ En cas de difficulté, pensez à lire le fichier README.txt à la racine du projet (CMS)
+▪ Créer un nouveau vhost pointant sur le dossier
+▪ Se connecter en administrateur sur le CMS nouvellement installé
+2. Modification CMS 
+▪ Modifier la page d’accueil de votre site
+▪ Ajouter un ou deux contenus
+▪ Personnaliser le site comme bon vous semble
+
+### Un CMS est déployé sur le serveur web il est fonctionnel, accessible et l'on peut modifier le contenu
+
+
+
+### Un vhost est configuré et permet d'accéder au site autrement que part l'IP
+
+
+
+## Partie 7 : Serveur Pré-prod - Prod
+
+Pour réaliser cette partie, il est conseillé d’être à deux (avec votre binôme). L’un jouera le 
+rôle du serveur pré-prod, l’autre le rôle du serveur de production. Vous pourrez changer 
+les rôles afin d’aborder chacun les objectifs
+
+Idéalement, vous serez dans la même configuration. Si ce n’est pas le cas, n’hésitez pas à dupliquer 
+(cloner) le serveur3
+le plus abouti / fonctionnel des deux.
+✓ Serveur A = Serveur de pré-production
+✓ Serveur B = Serveur de production
+Test 
+▪ Dans un premier temps essayez de pinger le serveur A depuis le serveur B avec leur nom (et 
+non pas leur adresse IP)
+▪ Essayez ensuite d’afficher le site depuis un navigateur du même réseau
+▪ Connectez-vous en SSH sur le serveur de développement (Serveur A)
+A ce stade, vous devriez avoir quelques contenus sur votre serveur A (Cf. chapitre précédent –
+Modification CMS). Si ce n’est pas le cas, merci de vous y reporter avant de passer à la suite.
+Préparation à la migration du site 
+
+Ici, nous allons migrer (en prod) le site du serveur A vers le serveur B.
+
+1. Faire une extraction de la base de données (dump SQL) dans son état actuel
+2. Connectez-vous en SFTP sur le serveur
+3. Récupérer la base de données « dumpée »
+4. Récupérer si nécessaire l’archive des dossiers « personnalisé » de votre CMS
+➢ Ici, nous parlons des dossiers et fichiers qui ont pu être ajouté ou qui aurait pu évoluer
+depuis l’installation du CMS
+➢ Lire la documentation du CMS ou suivre un article / tuto expliquant comment migrer / 
+déployer le site
+Serveur de production 
+Entre le serveur A et le serveur B
+1. Récupérer les sources (dossiers du site CMS sauvegardés) du serveur A et les copier sur le 
+serveur B
+2. Importer la BDD « dumpées » du serveur A vers le serveur B
+3. Modifier les éventuels fichiers de configuration natifs du CMS de manière à ce que le site soit 
+opérationnel sur le serveur B.
+➢ Lire la documentation officielle du CMS
+➢ Suivre un article / tuto au sujet de la migration / déploiement du CMS concerné
+4. Depuis la machine hôte ou depuis le serveur A, tester le bon fonctionnement et affichage du 
+site nouvellement déployé sur le serveur B.
+
+### Il y a 2 serveurs qui communiquent (ping et ssh)
+
+
+
+### La Migration est fonctionnelle (Dump SQL / Import SQL / Structures)
+
+
+
+### Les 2 sites sont identiques (contenus)
+
+
+
+## Partie 8 : Automatisation
+
+Créer un script qui permet : 
+• Lorsque l’on va créer un nouvel utilisateur son site web portant son nom sera créé.
+• Le répertoire par défaut de l’utilisateur sera /home/<UTILISATEUR>/public_html
+• Créer un répertoire logs par utilisateur
+• Stocker l’horodatage de la création du compte dans un fichier
+Création d’un nouvel utilisateur 
+▪ Créer un nouvel utilisateur « cesien » (ce sera votre profil pour le développement)
+▪ Assurez-vous que l’on puisse accéder à la page web4 de l’utilisateur via son nom
+Il vous sera demandé de faire une démonstration lors de la correction.
+Sauvegarde / backup 
+Créer une tâche planifiée (script) permettant d’automatiser la sauvegarde quotidienne de la base de 
+données du site du serveur de production.
+
+
+### Un script d'automatisation sera créé lors de l'ajout d'un user.
+
+
+
+### Dossier logs existant +  Stockage de l'horodatage (création de compte) dans un fichier
+
+
+
+### Accès à un dossier "public_html" dans le repertoire de l'utilisateur
+
+
+
+### Le script fonctionne lors de l'ajout d'un nouveau user
+
+
+
+### Une tâche quotidienne sauvegarde automatiquement la BDD
+
+
+
+## Partie 9 : Sécurisation du site et disponibilité
+
+Dans cette partie nous allons vous demander de réaliser quelques opérations pour sécuriser votre 
+site. Vous pourrez appliquer cela sur le dossier public_html de l’utilisateur cesien ou sur le projet 
+« monsite » du répertoire www
+
+HTTPS 
+▪ Activer le module SSL dans Apache
+INFO : Par défaut, si vous activez seulement le mod_ssl et que vous relancez les services 
+Apache, vous avez un certificat « Self-Signed ». Le navigateur ne considère pas ce genre de 
+certificat comme « fiable », ce qui a pour effet d’alerter le visiteur de votre site (avec un 
+message demandant s’il fait confiance au site afin d’y accéder).
+Conf Apache 
+▪ Mettre en place l’url rewriting sur votre projet
+o Ajouter le « www » dans l’url du site
+o Rediriger l’url http://VOTRE_URL vers https://VOTRE_URL
+▪ Créer des redirections vers des pages d’erreurs en fonction du code d’erreur
+o Erreurs : 401, 403, 404, 500
+o Un concours de la plus belle « page 404 » sera organisé ! ☺
+
+
+### HTTPS activé et fonctionel (au moins le self-signed)
+
+
+
+### URL Rewriting mis en place sur le site et fonctionnel
+
+
+
+### Créer des redirections vers des pages d'erreurs 401, 403, 404, 500
+
+
+
+## Partie 10 : Bonus
+
+Cache 
+Mettre en place un système de cache sur l’un de vos projets (exemple : memcache)
+Load Balancing 
+La répartition de charge (= load balancing en anglais, littéralement équilibrage de charge) est une 
+technique utilisée en informatique pour distribuer un travail entre plusieurs serveurs.
+Les avantages sont nombreux 
+▪ Augmentation de la qualité des services
+▪ Amélioration des temps de réponse des services
+▪ Capacité à pallier la défaillance d'une ou de plusieurs machines
+▪ Possibilité d'ajouter des serveurs sans interruption de service
+Mise en place 
+Mettre en place un système de Load Balancing sur l’instance de votre serveur. L’outil haproxy
+permet d’atteindre ces objectifs.
+Cf. Annexe 2 – Schéma simplifié d’un système de Load Balancing
+Vous pouvez vous informer ici : https://linuxfr.org/forums/linux-general/posts/tuto-howto-ubuntu￾debian-load-balancing-redirection-vers-plusieurs-vhost-avec-haproxy
+
+### Le cache est mis en place
+
+
+
+### Le Loadbalancing est mis en place
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ### Installer un clone d'image
 
@@ -487,44 +990,7 @@ Cliquez sur le bouton `Importer`.
 
 ![](images/zux5l8Nyhy.png)
 
-## Définir une adresse IP fixe sur un réseau
 
-Connectez-vous au réseau.
-
-Avant de définir l'adresse IP, vous devez trouver l'identifiant du périphérique reseau à utiliser. Utilisez la commande suivante et notez l'identifiant du périphérique.
-
-```
-ifconfig
-```
-
-![affichage commande ifconfig](images/uOLA7pJiFE.png)
-
-Editez ensuite le fichier `interfaces` situé dans le dossier `/etc/network/`.
-
-```
-nano /etc/network/interfaces
-```
-
-Modifiez le fichier pour qu'il ressemble à l'image suivante et sauvegardez :
-
-![fichier interfaces](images/RDLBsUO40z.png)
-
-- Remplacez les zones pixellisées par l'identifiant de votre périphérique réseau.
-- Remplacez l'adresse IP désirée à la place de celle encadrée.
-
-Relancez les périphériques réseaux.
-
-```
-ifup identifiant_peripherique
-```
-
-Testez que la machine peut bien communiquer avec d'autres.
-
-```
-ping 1.1.1.1
-```
-
-Appuyez sur `CTRL+C` pour stopper le processus.
 
 ## Partie 9 Sécuration du site
 
@@ -533,15 +999,6 @@ Installer le module SSL.
 ```
 sudo a2emod ssl
 ```
-
-
-
-
-
-
-
-
-
 
 
 
@@ -555,60 +1012,3 @@ Ajouter les lignes
 172.20.10.3 domaine.com
 172.20.10.4 postprod.domaine.com
 ```
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
-![](images/.png)
