@@ -1097,12 +1097,6 @@ mysql -u dibdd@localhost -p
 
 ## Partie 6 : Installation d'un nouveau site
 
-Dans cette partie nous allons vous demander d’installer un nouveau site reposant sur un CMS 
-(Wordpress ou Drupal) sur votre serveur actuel.
-
-1. Téléchargement, installation & configuration 
-▪ Télécharger sur votre serveur la dernière version du CMS.
-▪ Placer le CMS dans le répertoire de destination.
 ➢ Vous devrez le placer directement dans le répertoire www d’Apache
 ➢ Veillez à bien conserver votre premier dossier monsite (du dossier www)
 ▪ Installer le CMS
@@ -1161,7 +1155,40 @@ Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress su
 
 ### Configuration d'un vhost pour Wordpress
 
-[A REDIGER]
+Editez le fichier de configuration `/etc/apache2/sites-available/wordpress.conf`.
+
+```
+nano /etc/apache2/sites-available/wordpress.conf
+```
+
+Saisissez les informations sur ce modèle :
+
+```
+<VirtualHost *:80>
+    ServerAdmin admin@nom_domaine
+    ServerName nom_domaine
+    ServerAlias www.nom_domaine
+    DocumentRoot /var/www/html/nom_domaine/public
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    <Directory /var/www/html/nom_domaine/public>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+    </Directory>
+</VirtualHost>
+```
+
+On doit ensuite activer ce fichier de configuration.
+
+```
+a2ensite wordpress.conf
+```
+
+Et on doit à nouveau redémarrer Apache.
+
+```
+systemctl restart apache2
+```
 
 ### Configuration du fichier hosts
 
@@ -1179,6 +1206,10 @@ Sur le serveur, le fichier `hosts` doit également être configuré car le serve
 ```
 127.0.0.1 localhost nom_domaine
 ```
+
+Testez que vous pouvez accéder au site Wordpress via l'adresse `nom_domaine/` dans le navigateur de la machine hôte.
+
+![Wordpress demo](images/IQOGOv6uay.png)
 
 ## Partie 7 : Serveur Pré-prod - Prod
 
