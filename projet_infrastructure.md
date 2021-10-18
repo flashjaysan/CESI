@@ -408,9 +408,45 @@ nano /etc/hostname
 
 #### Définir une adresse IP fixe sur un réseau
 
+**Attention !** L'adresse IP fixe est différente pour chaque réseau où la machine hôte est connectée.
+
+##### Préparatif
+
+Si vous n'avez pas de connection sur votre machine virtuelle, vous devez vérifier que VirtualBox utilise le bon périphérique.
+
+Dans la barre des taches, cliquez sur les connexions. Notez le nom de la connexion actuelle.
+
+![connexions Windows](images/C7WO8NXm39.png)
+
+Ouvrez le panneau de configuration à la section `Panneau de configuration\Réseau et Internet\Connexions réseau`. Notez le nom du périphérique utilisé.
+
+![Connexions réseau Windows](images/r4nqyUN3kN.png)
+
+Dans VirtualBox, cliquez sur le bouton `Configuration`.
+
+A la section `Réseau`, sélectionnez le périphérique.
+
+![VirtualBox périphérique réseau](images/j65osGIIq3.png)
+
+##### Trouver l'adresse IP du routeur
+
+Sur la machine hôte Windows (pas la machine virtuelle), saisir la commande :
+
+```
+ipconfig
+```
+
+![demo ipconfig](images/gfdhjughjf.png)
+
+La ligne `Adresse IPv4` indique l'adresse de la machine hôte. **N'utilisez pas cette IP pour la machine virtuelle !**
+
+La ligne `Passerelle par défaut` indique l'adresse du routeur.
+
+##### Changer l'adresse IP
+
 Connectez-vous au réseau.
 
-Avant de définir l'adresse IP, vous devez trouver l'identifiant du périphérique réseau à utiliser. Utilisez la commande `ifconfig` (ou `ip a` si la commande précédente est indisponible) et notez l'identifiant du périphérique réseau.
+Avant de définir l'adresse IP, vous devez trouver l'identifiant du périphérique réseau à utiliser. Sur la machine virtuelle, utilisez la commande `ifconfig` (ou `ip a` si la commande précédente est indisponible) et notez l'identifiant du périphérique réseau.
 
 ```
 ifconfig
@@ -430,14 +466,32 @@ Editez ensuite le fichier `interfaces` situé dans le dossier `/etc/network/`.
 nano /etc/network/interfaces
 ```
 
-Modifiez le fichier pour qu'il ressemble à l'image suivante et sauvegardez :
+Modifiez le fichier comme ceci et sauvegardez :
+
+```
+# This file describes the network interfaces available on your system
+# and how to activate them. For more information, see interfaces(5).
+
+source /etc/network/interfaces.d/*
+
+# The loopback network interface
+auto lo
+iface lo inet loopback
+
+# The primary network interface
+allow-hotplug identifiant_peripherique
+iface identifiant_peripherique inet static
+	address adresse_à_donner_à_la_machine
+	netmask 255.255.255.0
+	gateway adresse_du_routeur
+	dns-nameservers adresse_du_routeur
+```
+
+Choisissez une `adresse_à_donner_à_la_machine` pour qu'elle soit unique sur votre réseau. On change généralement le dernier nombre de l'adresse IP.
+
+Supprimez la ligne d'IPv6 si elle est présente.
 
 ![fichier interfaces](images/RDLBsUO40z.png)
-
-- Remplacez les zones pixellisées par l'identifiant de votre périphérique réseau.
-- Remplacez l'adresse IP désirée à la place de celle encadrée.
-
-Supprimez également la ligne d'IPv6 si elle est présente.
 
 Relancez les périphériques réseaux avec la commande suivante :
 
@@ -465,6 +519,20 @@ ping 1.1.1.1
 ```
 
 Appuyez sur `CTRL+C` pour stopper le processus de ping.
+
+Si ce n'est pas le cas, ouvrez le fichier `/etc/resolv.conf`.
+
+```
+nano /etc/resolv.conf
+```
+
+Modifiez le fichier avec l'adresse du routeur et sauvegardez.
+
+```
+domain nom_domaine
+search nom_domaine
+nameserver adresse_du_routeur
+```
 
 ### Installer, configurer et utiliser des outils reconnus pour permettre d’héberger des solutions web en toute fiabilité
 
@@ -566,6 +634,8 @@ Saisissez les informations sur ce modèle :
 ![fichier vhost Apache](images/6jTDdJy3nL.png)
 
 **Remarque :** Sur l'image précédente, il y a une faute sur `FollowSymLinks` ce qui a provoqué une erreur. Soyez très vigilant sur ce que vous saisissez.
+
+Il est possible de créer plusieurs vhost dans un même fichier de configuration mais il est généralement plus simple de créer un fichier de configuration séparé pour chaque vhost.
 
 On doit ensuite activer ce fichier de configuration.
 
@@ -680,33 +750,148 @@ apt-get install php-mysql
 
 Saisissez `Y` pour valider l'installation.
 
+```
+apt-get install phpmyadmin
+```
 
+Cochez l'option `Apache` et validez.
+
+![option phpmyadmin Apache](images/V3yRlFOLd4.png)
+
+Choisissez d'utiliser `dbconfig-common`.
+
+![dbconfig-common](images/VHR0sqHHm1.png)
+
+Saisissez deux fois le mot de passe administrateur.
+
+Testez si phpmyadmin fonctionne. Ouvrez un navigateur sur la machine hôte. Saisissez l'adresse IP de la machine virtuelle suivie de `/phpmyadmin`.
+
+```
+XXX.XXX.XXX.XXX/phpmyadmin
+```
+
+![test de phpmyadmin](images/cwcCgLhNIS.png)
+
+#### Créer un alias dans le fichier hosts de la machine hôte
+
+Vous pouvez accéder au site du serveur web (Apache) depuis une machine cliente si vous utilisez l'adresse IP de la machine virtuelle dans le navigateur.
+
+```
+XXX.XXX.XXX.XXX
+```
+
+Il vaut mieux toutefois configurer le fichier `hosts` de la machine cliente pour accéder au site en utilisant un nom de domaine.
+
+Vous devez éditer le fichier `hosts` de votre machine cliente pour associer l'adresse IP de la machine virtuelle où est hébergée le serveur web et le nom de domaine.
+
+Sur Windows, ce fichier `hosts` se situe à l'emplacement `C:\Windows\System32\drivers\etc\`.
+
+Sur Linux, ce fichier `hosts` se situe à l'emplacement `/etc/`.
+
+Ouvrez le fichier `hosts` avec un éditeur de texte. Ajoutez une ligne avec l'adresse IP de la machine virtuelle suivie du nom de domaine.
+
+```
+XXX.XXX.XXX.XXX nom_domaine
+```
+
+![fichier hosts édité](images/aWsLRLB5OM.png)
 
 ## Partie 3 : Premier site
 
-Une fois Apache et PHP bien fonctionnels, vous pouvez créer une première page web.
-INFO : Vous aurez pris le soin de créer un alias dans le fichier hosts de la machine hôte.
-Se rendre dans le dossier www du serveur web (VM) :
-▪ Créer un nouveau dossier « monsite » à la racine 
-▪ Créer un fichier « index.php » dans ce nouveau dossier 
-▪ Ajouter du code PHP dans le fichier (une commande echo par exemple) 
-▪ Essayer d’atteindre le site depuis sa machine hôte
+### Se rendre dans le répertoire "www"
 
-### L'apprenant est capable de se rendre dans le répertoire "www"
+Allez dans le dossier `/var/www`.
 
+```
+cd /var/www
+```
 
+### Créer un nouveau projet dans le répertoire "www" avec des fichiers PHP
 
-### Il y a un ou plusieurs "projets" dans le répertoire "www" avec des fichiers PHP
+Créez un dossier `monsite`.
 
+```
+mkdir monsite
+```
 
+Entrez dans ce dossier.
+
+```
+cd monsite
+```
+
+Créez un fichier `index.php` dans ce nouveau dossier.
+
+```
+nano index.php
+```
+
+Saisissez le code suivant et sauvegardez.
+
+```
+<?php
+phpinfo();
+?>
+```
 
 ### Les projets sont accessibles depuis un navigateur (machine hôte ou autre machine du réseau)
 
+Pour accéder à ce fichier depuis un navigateur, vous devez créer un nouveau vhost.
 
+Editez le fichier de configuration `/etc/apache2/sites-available/monsite.conf`.
+
+```
+cd /etc/apache2/sites-available
+nano monsite.conf
+```
+
+Saisissez les informations sur ce modèle :
+
+```
+<VirtualHost *:80>
+    ServerAdmin admin@monsite
+    ServerName monsite.com
+    ServerAlias www.monsite.com
+    DocumentRoot /var/www/monsite
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+    <Directory /var/www/monsite>
+        Options Indexes FollowSymLinks
+        AllowOverride All
+    </Directory>
+</VirtualHost>
+```
+
+On doit ensuite activer ce fichier de configuration.
+
+```
+a2ensite monsite.conf
+```
+
+Et on doit à nouveau redémarrer Apache.
+
+```
+systemctl restart apache2
+```
+
+Vous devez éditer le fichier `hosts` de votre machine cliente pour associer l'adresse IP de la machine virtuelle où est hébergée le serveur web et le nom de domaine `monsite.com`.
+
+Sur Windows, ce fichier `hosts` se situe à l'emplacement `C:\Windows\System32\drivers\etc\`.
+
+Sur Linux, ce fichier `hosts` se situe à l'emplacement `/etc/`.
+
+Ouvrez le fichier `hosts` avec un éditeur de texte. Ajoutez une ligne avec l'adresse IP de la machine virtuelle suivie du nom de domaine.
+
+```
+XXX.XXX.XXX.XXX monsite.com
+```
+
+Ouvrez le navigateur et saisissez l'adresse `monsite.com`.
+
+![monsite.com](images/EyAguSyHvP.png)
 
 ## Partie 4 : Accès au site et sécurisation
 
-Sécurité 
 ▪ Installer SSH1
 si nécessaire
 ▪ Configurer SSH si besoin
@@ -757,10 +942,14 @@ Tester en affichant la page web « modifiée » dans le navigateur.
 
 Se connecter à la base de données
 Exemple :
+
+```
 mysql -u root -p
-Créer une base de données, vous pourrez la nommer cesibdd
-➢ Cette base de données sera utile pour déployer un site (CMS) dans la suite de ce projet
-Créer un nouvel utilisateur « dibdd » et attribuez-lui les privilèges maximum sur cette nouvelle base 
+```
+
+Créer une base de données, vous pourrez la nommer `cesibdd`.
+➢ Cette base de données sera utile pour déployer un site Wordpress dans la suite de ce projet
+Créer un nouvel utilisateur `dibdd` et attribuez-lui les privilèges maximum sur cette nouvelle base 
 de données
 ➢ Ce nouvel utilisateur sera utilisé pour se connecter à la base et accéder aux données dans la 
 suite de ce projet
@@ -838,41 +1027,7 @@ rm latest.tar.gz
 
 ### Configuration de Wordpress
 
-Vous pouvez accéder au site Wordpress depuis une machine cliente si vous utilisez l'adresse IP de la machine virtuelle dans le navigateur.
 
-```
-XXX.XXX.XXX.XXX
-```
-
-Il vaut mieux toutefois configurer le fichier `hosts` de la machine cliente pour accéder au site en utilisant un nom de domaine.
-
-#### Association du nom de domaine à la machine virtuelle sur le client
-
-Vous devez éditer le fichier `hosts` de votre machine cliente pour associer l'adresse IP de la machine virtuelle où est hébergée le serveur web et le nom de domaine.
-
-Sur Windows, ce fichier `hosts` se situe à l'emplacement `C:\Windows\System32\drivers\etc\`.
-
-**Attention !** Avant de l'ouvrir avec un éditeur de texte, vous devez modifier les droits associés à ce fichier.
-
-Faites un clic droit sur le fichier `hosts` et sélectionnez l'option `Propriétés`.
-
-Cliquez sur le bouton `Modifier...` dans la boite de dialogue `Propriétés de : hosts`.
-
-![boite de dialogue Propriétés de : hosts](images/a5hn1uQJjO.png)
-
-Sélectionnez `Utilisateurs (nom_machine\Utilisateurs)` dans la section `Noms de groupes ou d'utilisateurs` et cochez la case `Contrôle total, Autoriser` dans la section `Autorisations pour Utilisateurs` puis cliquez sur le bouton `OK`.
-
-![boite de dialogue Autorisations pour hosts](images/1uiZcKft99.png)
-
-Sur Linux, ce fichier `hosts` se situe à l'emplacement `/etc/`.
-
-Ouvrez le fichier `hosts` avec un éditeur de texte. Ajoutez une ligne avec l'adresse IP du serveur Linux suivie du nom de domaine.
-
-```
-XXX.XXX.XXX.XXX domaine.com
-```
-
-![fichier hosts édité](images/aWsLRLB5OM.png)
 
 #### Configuration de Wordpress
 
@@ -925,7 +1080,7 @@ ifup
 S'il n'est pas installé :
 
 ```
-sudo apt-get install ifupdown
+apt-get install ifupdown
 ```
 
 Vider le cache DNS de windows
