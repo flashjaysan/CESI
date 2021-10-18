@@ -892,8 +892,41 @@ Ouvrez le navigateur et saisissez l'adresse `monsite.com`.
 
 ## Partie 4 : Accès au site et sécurisation
 
-▪ Installer SSH1
-si nécessaire
+Par défaut, le client SSH est déjà installé sur les systèmes.
+
+```
+ssh -V
+```
+
+Vous devez installer le serveur SSH.
+
+```
+apt-get install openssh-server
+```
+
+Saisissez `Y` pour valider l'installation.
+
+**Remarque :** Il est également possible de le faire lors de l'installation de Debian.
+
+Vérifiez que le serveur fonctionne.
+
+```
+systemctl status sshd
+```
+
+![Status du serveur SSH](images/ME76AYDzMT.png)
+
+Par défaut, le serveur SSH s'exécute sur le port `22`.
+
+Assurez vous que le serveur démarre au lancement du système.
+
+```
+systemctl enable ssh
+```
+
+
+
+
 ▪ Configurer SSH si besoin
 ▪ S’assurer qu’il est bien possible de se connecter en SSH depuis une autre machine2
 ➢ Vous devez générer une authentification par certificat si ce n’est pas déjà fait
@@ -914,34 +947,33 @@ sortir (jail)
 Tester en affichant la page web « modifiée » dans le navigateur.
 
 
-### SSH est installé et fonctionnel. L'apprenant est capable d'identifier le répertoire contenant les fichiers utilisés par SSH (.ssh)
+### SSH est installé et fonctionnel. Identifier le répertoire contenant les fichiers utilisés par SSH (.ssh)
 
 
 
-### Il est possible de se connecter en SSH depuis une autre machine du réseau (et de manière sécurisée et renforcée)
+### Se connecter en SSH depuis une autre machine du réseau (et de manière sécurisée et renforcée)
 
 
 
-### Le Pare-feu est configuré en adéquation avec la stratégie
+### Configurer le pare-feu en adéquation avec la stratégie
 
 
 
-### Il existe 2 utilisateurs virtuels (Dev1 et Dev2)
+### Créer deux utilisateurs virtuels (Dev1 et Dev2)
 
 
 
-### Chaque utilisateur virtuel accède au dossier "monsite" et ne peut pas en sortir
+### Chaque utilisateur virtuel accède au dossier `monsite` et ne peut pas en sortir
 
 
 
-### Il est possible de se connecter en sftp depuis une autre machine et de modifier le fichier par défaut du site (monsite) et les changement sont visibles depuis un navigateur
+### Se connecter en SFTP depuis une autre machine, modifier le fichier par défaut du site (monsite) et rendre les changement visibles depuis un navigateur
 
 
 
 ## Partie 5 : La base de données
 
 Se connecter à la base de données
-Exemple :
 
 ```
 mysql -u root -p
@@ -958,7 +990,7 @@ suite de ce projet
 
 
 
-### L'apprenant sait se connecter à la base de données en ligne de commande avec un utilisateur autre que "root".  Cet utilisateur dispose des droits suffisants
+### Se connecter à la base de données en ligne de commande avec un utilisateur autre que `root`. Cet utilisateur dispose des droits suffisants
 
 
 
@@ -990,7 +1022,7 @@ Dans cette partie nous allons vous demander d’installer un nouveau site reposa
 
 
 
-### Un vhost est configuré et permet d'accéder au site autrement que part l'IP
+### Un vhost est configuré et permet d'accéder au site autrement que par l'IP
 
 
 
@@ -1033,18 +1065,11 @@ rm latest.tar.gz
 
 Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress sur le serveur web :
 
-```
 [A REDIGER]
-```
 
 ### Configuration d'un vhost pour Wordpress
 
 [A REDIGER]
-
-
-
-
-
 
 #### Accéder à une machine en SSH
 
@@ -1216,6 +1241,12 @@ o Rediriger l’url http://VOTRE_URL vers https://VOTRE_URL
 o Erreurs : 401, 403, 404, 500
 o Un concours de la plus belle « page 404 » sera organisé ! ☺
 
+Installer le module SSL.
+
+```
+sudo a2emod ssl
+```
+
 
 ### HTTPS activé et fonctionel (au moins le self-signed)
 
@@ -1254,46 +1285,3 @@ Vous pouvez vous informer ici : https://linuxfr.org/forums/linux-general/posts/t
 ### Le Loadbalancing est mis en place
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-## Partie 9 Sécuration du site
-
-Installer le module SSL.
-
-```
-sudo a2emod ssl
-```
-
-
-
-
-Editer le fichier `hosts` du client.
-
-Ajouter les lignes
-
-```
-172.20.10.2 preprod.domaine.com
-172.20.10.3 domaine.com
-172.20.10.4 postprod.domaine.com
-```
-
-## Choses sautées dans le document de Marc
-
-- p26 SSH
-- 
