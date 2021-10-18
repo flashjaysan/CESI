@@ -892,6 +892,8 @@ Ouvrez le navigateur et saisissez l'adresse `monsite.com`.
 
 ## Partie 4 : Accès au site et sécurisation
 
+### Installer SSH
+
 Par défaut, le client SSH est déjà installé sur les systèmes.
 
 ```
@@ -916,83 +918,182 @@ systemctl status sshd
 
 ![Status du serveur SSH](images/ME76AYDzMT.png)
 
-Par défaut, le serveur SSH s'exécute sur le port `22`.
-
 Assurez vous que le serveur démarre au lancement du système.
 
 ```
 systemctl enable ssh
 ```
 
+**Remarque :** Vous pouvez désactiver le serveur via la commande `systemctl stop sshd`.
+
+### Identifier le répertoire contenant les fichiers utilisés par le client SSH
+
+- Sur la machine hôte, le fichier de configuration SSH `known_hosts` est situé à l'emplacement `C:\Users\nom_utilisateur\.ssh\`.
+- Sur la machine virtuelle, les fichiers de configuration SSH sont situés à l'emplacement `/etc/ssh`.
+
+### Configurer le serveur SSH
+
+- Le fichier `ssh_config` définit les règles SSH pour les clients.
+- Le fichier `sshd_config` définit les règles SSH pour votre serveur SSH. Il définit le port SSH accessible ou refuser l'accès de certains utilisateurs à votre serveur.
+
+Ouvrez le fichier `sshd_config`.
+
+```
+nano sshd_config
+```
+
+Par défaut, le serveur SSH s'exécute sur le port `22`. Modifiez le port utilisé.
+
+Recherchez la ligne suivante :
+
+```
+#Port 22
+```
+
+Décommentez la ligne (en supprimant `#`) et modifiez le numéro de port du serveur SSH. Choisissez un port qui n'est pas déjà utilisé par un de vos services.
+
+```
+Port 2222
+```
+
+**Attention !** Souvenez-vous de ce numéro de port quand vous voudrez accéder au serveur SSH.
+
+Par défaut, on peut s'identifier en tant qu'administrateur (*root*) sur le serveur SSH. Désactivez cette possibilité.
+
+Recherchez la ligne suivante :
+
+```
+#PermitRootLogin
+```
+
+Et modifiez la comme ceci :
+
+```
+PermitRootLogin no
+```
+
+A la fin du fichier, ajoutez la ligne suivante :
+
+```
+Allowgroups sshusers
+```
+
+Sauvegardez.
+
+SSH propose deux façons de se connecter. Par mot de passe ou par clé d'authentification. Le projet exige d'utiliser la seconde façon.
+
+Créez un couple de clé publique et privée.
+
+```
+ssh-keygen
+```
+
+Vous devez préciser l'emplacement où générer ces clés. Le message suivant apparait.
+
+```
+Generating public/private rsa key pair.
+Enter file in which to save the key (/home/username/.ssh/id_rsa):
+```
+
+Appuyez sur `ENTREE` pour choisir l'emplacement par défaut (`/home/username/.ssh` ou `/root/username/.ssh` si la commande a été passée en tant que *root*).
+
+Appuyez sur `ENTREE` deux fois pour laisser une phrase de sécurité vide.
+
+Positionnez vous dans le dossier où ont été générées les clés.
+
+![clés SSH](images/0YdlCejQ7T.png)
+
+- Le fichier `id_rsa` est la clé privée. Elle se place au niveau du serveur. Ne la communiquez à personne.
+- Le fichier `id_rsa.pub` est la clé publique. C'est cette clé qu'il faut transmettre aux clients qui souhaitent se connecter au serveur SSH.
 
 
 
-▪ Configurer SSH si besoin
-▪ S’assurer qu’il est bien possible de se connecter en SSH depuis une autre machine2
-➢ Vous devez générer une authentification par certificat si ce n’est pas déjà fait
-▪ Mise en place d’un mécanisme de sécurité pour éviter les attaques brutes forces (de mot de 
-passe)
-▪ Configurer le pare-feu en adéquation avec votre stratégie (règles / ports)
-INFO : Il devra être possible d’ajouter à tout moment un nouvel utilisateur « distant » pouvant se 
-connecter en SSH avec son compte.
-Client FTP 
-Tester depuis la machine hôte de se connecter avec un client FTP (exemple : WinSCP)
-➢ Créer 2 utilisateurs virtuels « Dev1 » et « Dev2 » qui pourront interagir avec le serveur web
-• Chaque utilisateur (développeur) aura un répertoire virtuel
-• Chaque utilisateur accédera par défaut au répertoire « monsite » et ne pourra pas en 
-sortir (jail)
-• Les utilisateurs ne peuvent pas modifier les fichiers « systèmes »
-➢ Se connecter en SFTP avec chaque utilisateur (tester)
-➢ Modifier le fichier par défaut du site
-Tester en affichant la page web « modifiée » dans le navigateur.
+Après toutes ces configurations du serveur SSH, redémarrez le service.
 
-
-### SSH est installé et fonctionnel. Identifier le répertoire contenant les fichiers utilisés par SSH (.ssh)
+```
+systemctl restart sshd
+```
 
 
 
 ### Se connecter en SSH depuis une autre machine du réseau (et de manière sécurisée et renforcée)
 
+S’assurer qu’il est bien possible de se connecter en SSH depuis une autre machine (par exemple avec la machine hôte).
 
+Il devra être possible d’ajouter à tout moment un nouvel utilisateur « distant » pouvant se 
+connecter en SSH avec son compte.
 
 ### Configurer le pare-feu en adéquation avec la stratégie
 
-
+▪ Configurer le pare-feu en adéquation avec votre stratégie (règles / ports)
 
 ### Créer deux utilisateurs virtuels (Dev1 et Dev2)
 
-
+➢ Créer 2 utilisateurs virtuels « Dev1 » et « Dev2 » qui pourront interagir avec le serveur web
+• Chaque utilisateur (développeur) aura un répertoire virtuel
 
 ### Chaque utilisateur virtuel accède au dossier `monsite` et ne peut pas en sortir
 
+• Chaque utilisateur accédera par défaut au répertoire « monsite » et ne pourra pas en 
+sortir (jail)
+• Les utilisateurs ne peuvent pas modifier les fichiers « systèmes »
 
+### Se connecter en SFTP depuis une autre machine
 
-### Se connecter en SFTP depuis une autre machine, modifier le fichier par défaut du site (monsite) et rendre les changement visibles depuis un navigateur
+Client SFTP 
 
+Téléchargez le client SSH [WinSCP](https://winscp.net/eng/index.php).
 
+Tester depuis la machine hôte de se connecter avec un client SFTP (exemple : WinSCP)
+
+➢ Se connecter en SFTP avec chaque utilisateur (tester)
+
+### Modifier le fichier par défaut du site (monsite)
+
+Modifier le fichier par défaut du site
+
+###  Rendre les changement visibles depuis un navigateur
+
+Tester en affichant la page web « modifiée » dans le navigateur.
 
 ## Partie 5 : La base de données
 
-Se connecter à la base de données
+Connectez-vous à la base de données.
 
 ```
 mysql -u root -p
 ```
 
-Créer une base de données, vous pourrez la nommer `cesibdd`.
-➢ Cette base de données sera utile pour déployer un site Wordpress dans la suite de ce projet
-Créer un nouvel utilisateur `dibdd` et attribuez-lui les privilèges maximum sur cette nouvelle base 
-de données
-➢ Ce nouvel utilisateur sera utilisé pour se connecter à la base et accéder aux données dans la 
-suite de ce projet
-
 ### Une base de données est existante et opérationnelle
 
+Créez une base de données, vous pourrez la nommer `cesibdd`.
 
+```
+CREATE DATABASE cesibdd;
+```
 
-### Se connecter à la base de données en ligne de commande avec un utilisateur autre que `root`. Cet utilisateur dispose des droits suffisants
+### Créez un utilisateur
 
+Créez un nouvel utilisateur `dibdd`. Le mot de passe sera `dibdd`.
 
+```
+CREATE USER 'dibdd@localhost' IDENTIFIED BY 'dibdd';
+```
+
+### Attribuez les privilèges maximum à cet utilisateur
+
+Attribuez-lui les privilèges maximum sur cette nouvelle base de données.
+
+```
+GRANT ALL PRIVILEGES ON *.* TO 'dibdd'@'localhost';
+FLUSH PRIVILEGES;
+```
+
+### Connectez-vous à la base de données avec l'utilisateur `dibdd`
+
+```
+mysql -u dibdd@localhost -p
+```
 
 ## Partie 6 : Installation d'un nouveau site
 
@@ -1012,11 +1113,6 @@ Dans cette partie nous allons vous demander d’installer un nouveau site reposa
 ▪ Modifier la page d’accueil de votre site
 ▪ Ajouter un ou deux contenus
 ▪ Personnaliser le site comme bon vous semble
-
-
-
-
-
 
 ### Un CMS est déployé sur le serveur web il est fonctionnel, accessible et l'on peut modifier le contenu
 
@@ -1059,10 +1155,6 @@ rm latest.tar.gz
 
 ### Configuration de Wordpress
 
-
-
-#### Configuration de Wordpress
-
 Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress sur le serveur web :
 
 [A REDIGER]
@@ -1071,64 +1163,21 @@ Ouvrez le navigateur et accédez au domaine associé au chemin vers Wordpress su
 
 [A REDIGER]
 
-#### Accéder à une machine en SSH
-
-```
-ssh -p numero_port identifiant@adresse_machine
-```
-
-![commande ssh](images/jLkZc8YXD0.png)
-
-#### Connaitre son IP sur Windows
-
-Commande `ipconfig`
-```
-Carte réseau sans fil Wi-Fi :
-    ...
-   Adresse IPv4. . . . . . . . . . . . . .: XXX.XXX.XXX.XXX
-   ```
-
-#### Connaître son IP sur Linux
-
-Commande `hostname -I`
-
-Nom de domaine pour notre projet : group2.local
-
-#### Créer une IP statique
-
-Vérifier que le paquet `ifupdown` est installé.
-
-```
-ifup
-```
-
-S'il n'est pas installé :
-
-```
-apt-get install ifupdown
-```
-
-Vider le cache DNS de windows
-
-```
-ipconfig /flushdns
-```
-
 ### Configuration du fichier hosts
 
 La machine qui souhaite consulter le site sur le serveur web doit configurer son fichier `hosts` pour associer le nom de domaine avec l'adresse IP du serveur.
 
 ```
-XXX.XXX.XXX.XXX domaine.com
+XXX.XXX.XXX.XXX nom_domaine
 ```
 
-- Sur Windows, le fichier hosts se trouve à l'emplacement `C:/windows/system32/drivers/etc`.
-- Sur Linux, le fichier hosts se trouve à l'emplacement `/etc/`.
+- Sur Windows, le fichier `hosts` se trouve à l'emplacement `C:/windows/system32/drivers/etc`.
+- Sur Linux, le fichier `hosts` se trouve à l'emplacement `/etc/`.
 
-Sur le serveur, le fichier hosts doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP `127.0.0.1`.
+Sur le serveur, le fichier `hosts` doit également être configuré car le serveur web peut proposer plusieurs noms de domaines. Il faut associer le nom de domaine avec l'adresse IP `127.0.0.1`.
 
 ```
-127.0.0.1 localhost domaine.com
+127.0.0.1 localhost nom_domaine
 ```
 
 ## Partie 7 : Serveur Pré-prod - Prod
