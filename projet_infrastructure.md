@@ -247,7 +247,7 @@ En premier lieu, assurez-vous avant tout que le système est bien à jour. Pour 
 
 Saisissez la commande suivante et validez :
 
-```
+```bash
 su -
 ```
 
@@ -1210,6 +1210,12 @@ Sur le serveur, le fichier `hosts` doit également être configuré car le serve
 Testez que vous pouvez accéder au site Wordpress via l'adresse `nom_domaine/` dans le navigateur de la machine hôte.
 
 ![Wordpress demo](images/IQOGOv6uay.png)
+
+Cliquez sur le bouton `Let's go!`.
+
+![Wordpress configuration](images/n2uYRFF0v1.png)
+
+Erreur !
 
 ## Partie 7 : Serveur Pré-prod - Prod
 
