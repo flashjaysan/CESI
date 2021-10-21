@@ -1604,10 +1604,129 @@ service apache2 restart
 
 ### Créer des redirections vers des pages d'erreurs 401, 403, 404, 500
 
-Créer des redirections vers des pages d’erreurs en fonction du code d’erreur
-Erreurs : 401, 403, 404, 500
+Créez une page d'erreur (une page HTML statique) pour chacune des erreurs `401`, `403`, `404`, `500`. Tranférez les si besoin de votre machine hôte vers la machine virtuelle via le logiciel SFTP.
 
+Créez un dossier `errors` dans le dossier de Wordpress.
 
+```
+cd /var/www/wordpress
+mkdir errors
+```
+
+Placez les pages dans le dossier `errors`. Puis ouvrez le fichier de configuration vhost.
+
+Positionnez-vous dans le dossier `/etc/apache2/sites-enabled`.
+
+```
+cd /etc/apache2/sites-enabled
+```
+
+Editez le fichier de configuration `000-default.conf`.
+
+```
+nano 000-default.conf
+```
+
+Ajoutez les lignes suivantes aux vhosts en port `443` :
+
+```
+ErrorDocument 404 /errors/404.html
+ErrorDocument 401 /errors/401.html
+ErrorDocument 403 /errors/403.html
+ErrorDocument 500 /errors/500.html
+```
+
+```
+# MONSITE
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/monsite
+
+        <Directory /var/www/monsite>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        RewriteEngine On
+        RewriteCond %{HTTPS}  !=on
+        RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+# MONSITE SSL
+<VirtualHost *:443>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/monsite
+
+        <Directory /var/www/monsite>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+
+        ErrorDocument 404 /errors/404.html
+        ErrorDocument 401 /errors/401.html
+        ErrorDocument 403 /errors/403.html
+        ErrorDocument 500 /errors/500.html
+</VirtualHost>
+
+# WORDPRESS
+<VirtualHost *:80>
+        ServerName preprod.domaine.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress
+
+        <Directory /var/www/wordpress>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        RewriteEngine On
+        RewriteCond %{HTTPS}  !=on
+        RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+# WORDPRESS SSL
+<VirtualHost *:443>
+        ServerName preprod.domaine.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress
+
+        <Directory /var/www/wordpress>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+
+        ErrorDocument 404 /errors/404.html
+        ErrorDocument 401 /errors/401.html
+        ErrorDocument 403 /errors/403.html
+        ErrorDocument 500 /errors/500.html
+</VirtualHost>
+```
+
+Sauvegardez puis redémarrez le service Apache.
+
+```
+service apache2 restart
+```
 
 ## Partie 10 : Bonus
 
