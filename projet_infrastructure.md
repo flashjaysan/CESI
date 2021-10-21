@@ -1014,8 +1014,6 @@ Après toutes ces configurations du serveur SSH, redémarrez le service.
 systemctl restart sshd
 ```
 
-
-
 ### Se connecter en SSH depuis une autre machine du réseau (et de manière sécurisée et renforcée)
 
 S’assurer qu’il est bien possible de se connecter en SSH depuis une autre machine (par exemple avec la machine hôte).
@@ -1133,9 +1131,6 @@ mysql -u dibdd@localhost -p
 
 
 
-
-
-
 ### Installation du CMS Wordpress
 
 Positionnez-vous dans le dossier `/var/www/`.
@@ -1232,10 +1227,11 @@ Cliquez sur le bouton `Let's go!`.
 
 ![Wordpress configuration](images/n2uYRFF0v1.png)
 
-Erreur !
+[PROBLEME - A REVOIR]
 
 ## Partie 7 : Serveur Pré-prod - Prod
 
+[FAIT MAIS A REDIGER]
 Pour réaliser cette partie, il est conseillé d’être à deux (avec votre binôme). L’un jouera le 
 rôle du serveur pré-prod, l’autre le rôle du serveur de production. Vous pourrez changer 
 les rôles afin d’aborder chacun les objectifs
@@ -1290,6 +1286,7 @@ site nouvellement déployé sur le serveur B.
 
 ## Partie 8 : Automatisation
 
+[FAIT MAIS A REDIGER]
 Créer un script qui permet : 
 • Lorsque l’on va créer un nouvel utilisateur son site web portant son nom sera créé.
 • Le répertoire par défaut de l’utilisateur sera /home/<UTILISATEUR>/public_html
@@ -1730,8 +1727,15 @@ service apache2 restart
 
 ## Partie 10 : Bonus
 
+### Le cache est mis en place
+
+[A FAIRE]
 Cache 
 Mettre en place un système de cache sur l’un de vos projets (exemple : memcache)
+
+### Le Loadbalancing est mis en place
+
+[A FAIRE]
 Load Balancing 
 La répartition de charge (= load balancing en anglais, littéralement équilibrage de charge) est une 
 technique utilisée en informatique pour distribuer un travail entre plusieurs serveurs.
@@ -1745,11 +1749,3 @@ Mettre en place un système de Load Balancing sur l’instance de votre serveur.
 permet d’atteindre ces objectifs.
 Cf. Annexe 2 – Schéma simplifié d’un système de Load Balancing
 Vous pouvez vous informer ici : https://linuxfr.org/forums/linux-general/posts/tuto-howto-ubuntu￾debian-load-balancing-redirection-vers-plusieurs-vhost-avec-haproxy
-
-### Le cache est mis en place
-
-
-
-### Le Loadbalancing est mis en place
-
-
