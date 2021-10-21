@@ -1364,26 +1364,6 @@ chmod 700 save_database.sh
 
 ## Partie 9 : Sécurisation du site et disponibilité
 
-HTTPS 
-▪ Activer le module SSL dans Apache
-INFO : Par défaut, si vous activez seulement le mod_ssl et que vous relancez les services 
-Apache, vous avez un certificat « Self-Signed ». Le navigateur ne considère pas ce genre de 
-certificat comme « fiable », ce qui a pour effet d’alerter le visiteur de votre site (avec un 
-message demandant s’il fait confiance au site afin d’y accéder).
-
-REDIRECTION d'erreurs
-Conf Apache 
-▪ Mettre en place l’url rewriting sur votre projet
-o Ajouter le « www » dans l’url du site
-o Rediriger l’url http://VOTRE_URL vers https://VOTRE_URL
-▪ Créer des redirections vers des pages d’erreurs en fonction du code d’erreur
-o Erreurs : 401, 403, 404, 500
-o Un concours de la plus belle « page 404 » sera organisé ! ☺
-
-```
-sudo ae2mod ssl
-```
-
 ### HTTPS activé et fonctionel (au moins le self-signed)
 
 Utilisez le protocole cryptographique SSL (Secure Socket Layer) pour activer la certification HTTPS et la sécurisation du site.
@@ -1623,6 +1603,9 @@ service apache2 restart
 ```
 
 ### Créer des redirections vers des pages d'erreurs 401, 403, 404, 500
+
+Créer des redirections vers des pages d’erreurs en fonction du code d’erreur
+Erreurs : 401, 403, 404, 500
 
 
 
