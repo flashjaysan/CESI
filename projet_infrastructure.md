@@ -1595,7 +1595,7 @@ RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </VirtualHost>
 ```
 
-Activez le service `rewrite`.
+Si ce n'est pas déjà fait, activez le service `rewrite`.
 
 ```
 a2enmod rewrite
