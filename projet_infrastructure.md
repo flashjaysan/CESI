@@ -1595,6 +1595,12 @@ RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 </VirtualHost>
 ```
 
+Activez le service `rewrite`.
+
+```
+a2enmod rewrite
+```
+
 Sauvegardez puis redémarrez le service Apache.
 
 ```
