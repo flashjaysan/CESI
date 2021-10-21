@@ -247,7 +247,7 @@ En premier lieu, assurez-vous avant tout que le système est bien à jour. Pour 
 
 Saisissez la commande suivante et validez :
 
-```bash
+```
 su -
 ```
 
@@ -1025,7 +1025,24 @@ connecter en SSH avec son compte.
 
 ### Configurer le pare-feu en adéquation avec la stratégie
 
-▪ Configurer le pare-feu en adéquation avec votre stratégie (règles / ports)
+Installez le firewall `ufw` qui est très simple d'utilisation.
+
+```
+apt-get install ufw
+```
+
+Activez `uwf`.
+
+```
+ufw enable
+```
+
+Par défaut, tous les ports sont fermés. Ouvrez les ports que vous souhaitez utiliser. Pour le projet, vous aurez besoin du port `80` pour le serveur web Apache et le port SSH (par défaut `22` mais que vous devriez avoir modifié).
+
+```
+ufw allow 80
+ufw allow port_ssh
+```
 
 ### Créer deux utilisateurs virtuels (Dev1 et Dev2)
 
@@ -1282,9 +1299,7 @@ Création d’un nouvel utilisateur
 ▪ Créer un nouvel utilisateur « cesien » (ce sera votre profil pour le développement)
 ▪ Assurez-vous que l’on puisse accéder à la page web4 de l’utilisateur via son nom
 Il vous sera demandé de faire une démonstration lors de la correction.
-Sauvegarde / backup 
-Créer une tâche planifiée (script) permettant d’automatiser la sauvegarde quotidienne de la base de 
-données du site du serveur de production.
+
 
 
 ### Un script d'automatisation sera créé lors de l'ajout d'un user.
@@ -1305,13 +1320,49 @@ données du site du serveur de production.
 
 ### Une tâche quotidienne sauvegarde automatiquement la BDD
 
+Utilisez `cron` pour exécuter une tâche quotidienne. Vérifiez que son status est bien actif.
 
+```
+systemctl status cron
+```
+
+Placez-vous dans le dossier `/etc/cron.daily`.
+
+```
+cd /etc/cron.daily
+```
+
+Créez un script pour sauvegarder la base de données.
+
+```
+nano save_database.sh
+```
+
+Saisissez le code suivant :
+
+```
+#!/bin/bash
+
+# date du jour
+backupdate=$(date +%Y-%m-%d)
+
+#répertoire de backup
+dirbackup=/backup/backup-$backupdate
+
+# création du répertoire de backup
+/bin/mkdir $dirbackup
+
+# sauvegarde de la base de données mysql dans un fichier gzip
+/usr/bin/mysqldump --user=xxxx --password=xxxx --all-databases | /usr/bin/gzip > $dirbackup/mysqldump-$backupdate.sql.gz
+```
+
+Modifiez les droits du fichier script.
+
+```
+chmod 700 save_database.sh
+```
 
 ## Partie 9 : Sécurisation du site et disponibilité
-
-Dans cette partie nous allons vous demander de réaliser quelques opérations pour sécuriser votre 
-site. Vous pourrez appliquer cela sur le dossier public_html de l’utilisateur cesien ou sur le projet 
-« monsite » du répertoire www
 
 HTTPS 
 ▪ Activer le module SSL dans Apache
@@ -1319,6 +1370,8 @@ INFO : Par défaut, si vous activez seulement le mod_ssl et que vous relancez le
 Apache, vous avez un certificat « Self-Signed ». Le navigateur ne considère pas ce genre de 
 certificat comme « fiable », ce qui a pour effet d’alerter le visiteur de votre site (avec un 
 message demandant s’il fait confiance au site afin d’y accéder).
+
+REDIRECTION d'erreurs
 Conf Apache 
 ▪ Mettre en place l’url rewriting sur votre projet
 o Ajouter le « www » dans l’url du site
@@ -1327,20 +1380,247 @@ o Rediriger l’url http://VOTRE_URL vers https://VOTRE_URL
 o Erreurs : 401, 403, 404, 500
 o Un concours de la plus belle « page 404 » sera organisé ! ☺
 
-Installer le module SSL.
-
 ```
-sudo a2emod ssl
+sudo ae2mod ssl
 ```
-
 
 ### HTTPS activé et fonctionel (au moins le self-signed)
 
+Utilisez le protocole cryptographique SSL (Secure Socket Layer) pour activer la certification HTTPS et la sécurisation du site.
 
+Le protocol SSL créé un canal sécurisé entre deux machines.
+
+Installez le module SSL d'Apache pour qu'il puisse traiter les requêtes HTTPS et les certificats.
+
+```
+a2enmod ssl
+```
+
+Redémarrez le service Apache.
+
+```
+systemctl restart apache2
+```
+
+Créez les certificats SSL.
+
+```
+sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/ssl/private/apache-selfsigned.key -out /etc/ssl/certs/apache-selfsigned.crt
+```
+
+Saisissez vos informations.
+
+![Exemple d'informations pour le certificat SSL](images/LCCZk0rtp0.png)
+
+Modifiez votre fichier vhost. Positionnez-vous dans le dossier `/etc/apache2/sites-enabled`.
+
+```
+cd /etc/apache2/sites-enabled
+```
+
+Editez le fichier de configuration `000-default.conf`.
+
+```
+nano 000-default.conf
+```
+
+Créez un nouveau virtual host en port `443` pour chacun des sites (copiez-les et modifiez juste le port) et ajoutez les lignes suivantes :
+
+```
+SSLEngine on
+SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+```
+
+```
+# MONSITE
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/monsite
+
+        <Directory /var/www/monsite>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+# MONSITE SSL
+<VirtualHost *:443>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/monsite
+
+        <Directory /var/www/monsite>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+</VirtualHost>
+
+# WORDPRESS
+<VirtualHost *:80>
+        ServerName preprod.domaine.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress
+
+        <Directory /var/www/wordpress>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+# WORDPRESS SSL
+<VirtualHost *:443>
+        ServerName preprod.domaine.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress
+
+        <Directory /var/www/wordpress>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+</VirtualHost>
+```
+
+Sauvegardez puis redémarrez le service Apache.
+
+```
+service apache2 restart
+```
+
+Autorisez l'accès au port `443` dans le pare-feu.
+
+```
+ufw allow 443
+```
+
+Assurez-vous que le pare-feu est activé.
+
+```
+ufw enable
+```
 
 ### URL Rewriting mis en place sur le site et fonctionnel
 
+Modifiez votre fichier vhost. Positionnez-vous dans le dossier `/etc/apache2/sites-enabled`.
 
+```
+cd /etc/apache2/sites-enabled
+```
+
+Editez le fichier de configuration `000-default.conf`.
+
+```
+nano 000-default.conf
+```
+
+Ajoutez les lignes suivantes aux vhosts en port `80` :
+
+```
+RewriteEngine On
+RewriteCond %{HTTPS}  !=on
+RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+```
+
+```
+# MONSITE
+<VirtualHost *:80>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/monsite
+
+        <Directory /var/www/monsite>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        RewriteEngine On
+        RewriteCond %{HTTPS}  !=on
+        RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+# MONSITE SSL
+<VirtualHost *:443>
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/monsite
+
+        <Directory /var/www/monsite>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+</VirtualHost>
+
+# WORDPRESS
+<VirtualHost *:80>
+        ServerName preprod.domaine.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress
+
+        <Directory /var/www/wordpress>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        RewriteEngine On
+        RewriteCond %{HTTPS}  !=on
+        RewriteRule ^/?(.*) https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+</VirtualHost>
+
+# WORDPRESS SSL
+<VirtualHost *:443>
+        ServerName preprod.domaine.com
+        ServerAdmin webmaster@localhost
+        DocumentRoot /var/www/wordpress
+
+        <Directory /var/www/wordpress>
+          Options Indexes FollowSymLinks
+          AllowOverride All
+        </Directory>
+
+        ErrorLog ${APACHE_LOG_DIR}/error.log
+        CustomLog ${APACHE_LOG_DIR}/access.log combined
+
+        SSLEngine on
+        SSLCertificateFile /etc/ssl/certs/apache-selfsigned.crt
+        SSLCertificateKeyFile /etc/ssl/private/apache-selfsigned.key
+</VirtualHost>
+```
+
+Sauvegardez puis redémarrez le service Apache.
+
+```
+service apache2 restart
+```
 
 ### Créer des redirections vers des pages d'erreurs 401, 403, 404, 500
 
