@@ -2,6 +2,8 @@
 
 *Equipe Lucie, Morgan et Jérôme*
 
+**Remerciements à toute l'équipe, la promo et les intervenants pour l'entraide et le support.**
+
 ## Partie 1 : Installation d'une machine virtuelle et de serveurs
 
 ### Déployer une machine virtuelle Linux Server (sans interface)
